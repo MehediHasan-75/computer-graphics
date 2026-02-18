@@ -274,7 +274,7 @@ int main(int argc, char** argv){
     srand((unsigned)time(nullptr));
 
     glutInit(&argc, argv);
-    glutInitDisplayMode(GLUT_SINGLE | GLUT_RGB);
+    glutInitDisplayMode(GLUT_DOUBLE | GLUT_RGB);
 
     glutInitWindowSize(W, H);
     glutInitWindowPosition(0,0);
