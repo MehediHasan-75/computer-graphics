@@ -49,8 +49,7 @@ bool collide(int x1, int y1, int r1, int x2, int y2, int r2){
 // ------------------- DRAW CIRCLE (ITERATIVE FIX) -------------------
 // This replaces the recursive fillCircle function.
 // It iterates through a square box around the center and draws pixels inside the radius.
-void drawAndBuildCircle(int cx, int cy, int r, vector<pair<int,int>>& store){
-    store.clear();
+void drawAndBuildCircle(int cx, int cy, int r){
     
     glBegin(GL_POINTS);
     
@@ -68,21 +67,9 @@ void drawAndBuildCircle(int cx, int cy, int r, vector<pair<int,int>>& store){
             
             if(dx*dx + dy*dy <= (long long)r*r) {
                 glVertex2i(x, y);       // Draw the pixel
-                store.push_back({x,y}); // Store it (if needed for other logic)
-            }
+             }
         }
     }
-    glEnd();
-}
-
-// ------------------- DRAW BOUNDARY -------------------
-void drawRegion(){
-    glColor3f(1,1,1); // White boundary
-    glBegin(GL_LINE_LOOP);
-        glVertex2i(L,B);
-        glVertex2i(R,B);
-        glVertex2i(R,T);
-        glVertex2i(L,T);
     glEnd();
 }
 
@@ -95,11 +82,11 @@ void display(){
 
     // Draw Red Circle
     glColor3f(1,0,0);
-    drawAndBuildCircle(redcx, redcy, ra, redc);
+    drawAndBuildCircle(redcx, redcy, ra);
 
     // Draw Blue Circle
     glColor3f(0,0,1);
-    drawAndBuildCircle(bluecx, bluecy, rb, bluec);
+    drawAndBuildCircle(bluecx, bluecy, rb);
 
     // Draw Text
     glColor3f(1,1,0); // Yellow text
@@ -237,7 +224,7 @@ int main(int argc, char** argv){
     
     glutInitWindowSize(W, H);
     glutInitWindowPosition(100, 100);
-    glutCreateWindow("Circle Game - Fixed");
+    glutCreateWindow("Circle Game.");
 
     init();
     resetGame(); // Sets up coordinates and radii
