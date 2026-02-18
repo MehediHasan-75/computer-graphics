@@ -44,8 +44,7 @@ bool collide(int x1, int y1, int r1, int x2, int y2, int r2){
     return dist2 <= rr*rr;
 }
 
-// ------------------- DRAW CIRCLE (ITERATIVE FIX) -------------------
-// This replaces the recursive fillCircle function.
+// ------------------- DRAW CIRCLE -------------------
 // It iterates through a square box around the center and draws pixels inside the radius.
 void drawAndBuildCircle(int cx, int cy, int r){
     
@@ -75,9 +74,6 @@ void drawAndBuildCircle(int cx, int cy, int r){
 void display(){
     glClear(GL_COLOR_BUFFER_BIT);
 
-    // Draw boundary
-    drawRegion();
-
     // Draw Red Circle
     glColor3f(1,0,0);
     drawAndBuildCircle(redcx, redcy, ra);
@@ -101,8 +97,7 @@ void display(){
     for(char c: s) glutBitmapCharacter(GLUT_BITMAP_HELVETICA_18, c);
 
     glFlush();
-    glutSwapBuffers(); // Better performance than glFlush alone
-}
+ }
 
 // ------------------- INIT / RESET GAME -------------------
 void resetGame(){
