@@ -29,8 +29,6 @@ int blueVx, blueVy;       // blue velocity
 
 bool gameOver = false;
 
-// store pixels of circles (optional, kept from your logic)
-vector<pair<int,int>> redc, bluec;
 
 // ------------------- UTILS -------------------
 int rnd(int a, int b){
