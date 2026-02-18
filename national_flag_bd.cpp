@@ -159,10 +159,6 @@ void init(){
     // Set background (clear) color to white
     glClearColor(1.0, 1.0, 1.0, 1.0);
 
-    // Select projection matrix
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-
     // Set orthographic 2D projection
     // Defines coordinate system with (0,0) at center
     gluOrtho2D(L, R, B, T);
