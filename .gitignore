@@ -1,0 +1,5 @@
+# Ignore compiled binaries and build files
+2_circle_game
+*.o
+*.out
+*.exe
