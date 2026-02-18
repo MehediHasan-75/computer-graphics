@@ -1,5 +1,5 @@
 #include <bits/stdc++.h>
-#include <GLUT/glut.h>
+#include <GLUT/glut.h>// For Windows or ubuntu, use <GL/glut.h>
 using namespace std;
 
 // ------------------- CONFIG / GLOBAL -------------------
