@@ -448,7 +448,18 @@ Three approaches:
 
 ---
 
+
 ### Region Filling
+
+**Interior-defined region:** A region where filling begins from a seed point inside the boundary and continues outward until the boundary is reached.
+
+
+**Boundary-defined region:** A region enclosed by a specific boundary color, where filling begins from a seed point inside the area and continues outward pixel-by-pixel until the specific boundary color is reached.
+
+<p align="center">
+  <img src="fig3-17_boundary_interior_region.png" alt="Boundary-defined and interior-defined regions" width="500"/>
+</p>
+<div align="center"><b>Fig. 3-17</b> (a) Boundary-defined region: filling is constrained by a boundary color. (b) Interior-defined region: filling spreads outward from a seed point until the boundary is reached.</div>
 
 #### Pixel Connectivity
 
@@ -456,6 +467,11 @@ Three approaches:
 |---|---|
 | **4-Connected** | Up, Down, Left, Right only |
 | **8-Connected** | All 8 surrounding pixels (includes diagonals) |
+
+<p align="center">
+  <img src="fig3-18_pixel_connectivity.png" alt="4-connected vs. 8-connected pixels" width="500"/>
+</p>
+<div align="center"><b>Fig. 3-18</b> (a) 4-connected neighbors: only up, down, left, right. (b) 8-connected neighbors: includes diagonals. (c) Example showing how connectivity affects region filling.</div>
 
 > **Critical rule:** If boundary is 8-connected → fill must be 4-connected, and vice versa (prevents leaking).
 
