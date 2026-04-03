@@ -714,12 +714,10 @@ Suppose we want to scan-convert the uppercase character "E" in (a) from its outl
 
 * Pixel partially covered by a white line:
 
-  ```
-  Coverage = 50% (0.5)
-  Object color = White (1)
-  Background color = Black (0)
-  Pixel color = 1 × 0.5 + 0 × 0.5 = 0.5 → gray
-  ```
+    Coverage = 50% (0.5)
+    Object color = White (1)
+    Background color = Black (0)
+    Pixel color = 1 × 0.5 + 0 × 0.5 = 0.5 → gray
 * Fully inside pixel → full white, outside → black.
 
 **Result:** Smooth edge; shape remains sharp in the center.
@@ -740,11 +738,10 @@ Suppose we want to scan-convert the uppercase character "E" in (a) from its outl
 
 **Visual Idea:**
 
-```
-[• • •]
-[• o o]
-[o o o]
-```
+
+  [• • •]
+  [• o o]
+  [o o o]
 
 * `•` = subpixel inside object
 * `o` = subpixel outside object
@@ -766,11 +763,10 @@ Suppose we want to scan-convert the uppercase character "E" in (a) from its outl
 
 **Visual Idea (simplified):**
 
-```
-Before:   After:
-• o       • •
-o •       o •
-```
+
+  Before:   After:
+  • o       • •
+  o •       o •
 
 * Line edges appear aligned → stair-step effect minimized.
 
