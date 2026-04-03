@@ -423,6 +423,7 @@ $$p_0 = 1 - r = 1 - 5 = -4$$
 | ✅ Advantage | ❌ Disadvantage |
 |---|---|
 | Infinitely scalable | Computationally expensive |
+
 | Single file for all sizes | Blurry at small sizes without hinting |
 
 ---
@@ -647,14 +648,129 @@ Fills row-by-row using the polygon's geometric edge data. Eliminates recursion.
 ## Anti-Aliasing
 
 ### Aliasing Artifacts
+- Visual distortions caused by approximating continuous objects with discrete pixels.
 
 | Artifact | Description |
 |---|---|
 | **Staircase (Jaggies)** | Jagged edges on diagonal lines/curves |
-| **Unequal Brightness** | Diagonals appear dimmer than horizontal/vertical lines |
-| **Picket Fence Problem** | Objects misaligned with pixel grid → local/global distortion |
+| **Unequal Brightness** | Diagonals appear dimmer than horizontal/vertical lines. Because distance between two diagonal pixel is larger |
+| **Picket Fence Problem** | When an object does not fit into, the pixel grid properly |
+| **Edge Flickering** | Edge vibrate during animation |
+| **Moire Pattern** | Interferance occur when high frequency texture are sampled |
 
-### Techniques
 
-- **Pre-filtering (Area Sampling):** Treats a pixel as an area; calculates the exact proportion of object overlap → proportional intensity → smooth edges
-- **Post-filtering (Supersampling):** Samples at higher resolution, averages samples to compute final pixel values
+<p align="center">
+  <img src="public/images/unequeal_brightness.png" alt="Pixel spacing and aliasing in line drawing" width="400"/>
+</p>
+<div align="center"><b>Fig. </b>Unequal Brightness</div>
+
+<p align="center">
+  <img src="public/images/picket_fenc_problem.png" alt="Scan-converting an outline font" width="500"/>
+</p>
+<div align="center"><b>Fig. </b> Picket Fence Problem with the outline font.<br> 
+Suppose we want to scan-convert the uppercase character "E" in (a) from its outline description to a bitmap consisting of pixels inside the region defined by the outline. The result in (b) exhibits both asymmetry (the upper arm of the character is twice as thick as the other parts) and dropout (the middle arm is absent). A slight adjustment and/or realignment of the outline can lead to a reasonable outcome (c).</div>
+
+### **. Why Anti-Aliasing is Needed**
+
+* Simply increasing resolution reduces jaggedness but **requires a lot of memory and processing**.
+* Anti-aliasing **smooths edges without increasing resolution**, making images appear natural.
+
+---
+
+### **. Main Anti-Aliasing Techniques with Examples**
+
+#### **A. Pre-Filtering**
+
+* Works **before converting to pixels**.
+* Each pixel’s color is set **based on how much of it is covered by the object**.
+
+**Example:**
+
+* Pixel partially covered by a white line:
+
+  ```
+  Coverage = 50% (0.5)
+  Object color = White (1)
+  Background color = Black (0)
+  Pixel color = 1 × 0.5 + 0 × 0.5 = 0.5 → gray
+  ```
+* Fully inside pixel → full white, outside → black.
+
+**Result:** Smooth edge; shape remains sharp in the center.
+
+---
+
+#### **B. Supersampling (Post-Filtering)**
+
+* Each pixel is divided into **subpixels** (e.g., 3×3).
+* Count subpixels inside the object → average their colors → final pixel color.
+
+**Example:**
+
+* Pixel divided into 3×3 = 9 subpixels
+* 6 subpixels are inside a line → coverage = 6/9 ≈ 0.67
+* Object color = white (1), background = black (0)
+* Pixel color = 1 × 0.67 + 0 × 0.33 = 0.67 → gray
+
+**Visual Idea:**
+
+```
+[• • •]
+[• o o]
+[o o o]
+```
+
+* `•` = subpixel inside object
+* `o` = subpixel outside object
+* Coverage = 6/9 → pixel color 0.67 (blended)
+
+**Result:** Smooth diagonal lines and edges.
+
+---
+
+#### **C. Pixel Phasing**
+
+* Hardware-based: shifts pixels **slightly from their normal positions** to align with true line/contour.
+* Reduces stair-step effect without blurring edges.
+
+**Example:**
+
+* A diagonal line across a pixel grid may look jagged.
+* Pixel positions are shifted **fractionally toward the line**, so the line looks smoother.
+
+**Visual Idea (simplified):**
+
+```
+Before:   After:
+• o       • •
+o •       o •
+```
+
+* Line edges appear aligned → stair-step effect minimized.
+
+---
+
+#### **D. Gray-Level / Color Blending**
+
+* Uses **intermediate shades or colors** between object and background.
+* Only edge pixels are blended, making transitions smooth.
+
+**Example:**
+
+* White line on black background
+* Edge pixel = 50% covered → gray
+* Edge pixel = 25% covered → dark gray
+
+**Visual Idea:**
+
+```
+Background → Dark Gray → Gray → White (center of line)
+```
+
+**Result:** Human eye sees a smooth, continuous line.
+
+
+---
+**In short:**
+Anti-aliasing tricks your eyes by **blending colors, averaging sub-pixels, or shifting pixels slightly**, so edges appear **smooth and natural**, even on low-resolution screens.
+
