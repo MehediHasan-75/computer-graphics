@@ -966,59 +966,55 @@ $$d_0 = 3 - 2(5) = 3 - 10 = -7$$</p>
 <thead>
 <tr>
 <th>Step</th>
-<th>$d_n$</th>
-<th>$d&lt;0$?</th>
-<th>Plot $(x,y)$</th>
-<th>$d_{n+1}$ calculation</th>
-<th>$d_{n+1}$</th>
-<th>New $(x,y)$</th>
+<th>x</th>
+<th>y</th>
+<th>$x_{next}$</th>
+<th>Action</th>
+<th>$y_{next}$</th>
+<th>d</th>
+<th>$d_{next}$</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Init</td>
-<td>—</td>
-<td>—</td>
-<td><strong>(0, 5)</strong></td>
-<td>$d_0 = -7$</td>
-<td>−7</td>
-<td>—</td>
+<td>0</td>
+<td>5</td>
+<td>1</td>
+<td>d &lt; 0</td>
+<td>5</td>
+<td>-7</td>
+<td>-1</td>
 </tr>
 <tr>
 <td>1</td>
-<td>−7</td>
-<td>Yes</td>
-<td><strong>(1, 5)</strong></td>
-<td>$-7 + 4(0) + 6 = -7+0+6$</td>
-<td>−1</td>
-<td>$(1, 5)$</td>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>d &lt; 0</td>
+<td>5</td>
+<td>-1</td>
+<td>9</td>
 </tr>
 <tr>
 <td>2</td>
-<td>−1</td>
-<td>Yes</td>
-<td><strong>(2, 5)</strong></td>
-<td>$-1 + 4(1) + 6 = -1+4+6$</td>
+<td>2</td>
+<td>5</td>
+<td>3</td>
+<td>d &gt;= 0</td>
+<td>4</td>
 <td>9</td>
-<td>$(2, 5)$</td>
+<td>7</td>
 </tr>
 <tr>
 <td>3</td>
-<td>9</td>
-<td>No</td>
-<td><strong>(3, 4)</strong></td>
-<td>$9 + 4(2) - 4(5) + 10 = 9+8-20+10$</td>
-<td>7</td>
-<td>$(3, 4)$</td>
-</tr>
-<tr>
+<td>3</td>
 <td>4</td>
+<td>4</td>
+<td>d &gt;= 0</td>
+<td>3</td>
 <td>7</td>
-<td>No</td>
-<td><strong>(4, 3)</strong></td>
-<td>$7 + 4(3) - 4(4) + 10 = 7+12-16+10$</td>
 <td>13</td>
-<td>$(4, 3)$</td>
 </tr>
 </tbody>
 </table>
@@ -1043,59 +1039,55 @@ $$p_0 = 1 - r = 1 - 5 = -4$$</p>
 <thead>
 <tr>
 <th>Step</th>
-<th>$p_n$</th>
-<th>$p&lt;0$?</th>
-<th>Plot $(x,y)$</th>
-<th>$p_{n+1}$ calculation</th>
-<th>$p_{n+1}$</th>
-<th>New $(x,y)$</th>
+<th>x</th>
+<th>y</th>
+<th>$x_{next}$</th>
+<th>Action</th>
+<th>$y_{next}$</th>
+<th>p</th>
+<th>$d_{next}$</th>
 </tr>
 </thead>
 <tbody>
 <tr>
 <td>Init</td>
-<td>—</td>
-<td>—</td>
-<td><strong>(0, 5)</strong></td>
-<td>$p_0 = -4$</td>
-<td>−4</td>
-<td>—</td>
+<td>0</td>
+<td>5</td>
+<td>1</td>
+<td>p &lt; 0</td>
+<td>5</td>
+<td>-4</td>
+<td>-1</td>
 </tr>
 <tr>
 <td>1</td>
-<td>−4</td>
-<td>Yes</td>
-<td><strong>(1, 5)</strong></td>
-<td>$-4 + 2(0) + 3 = -4+0+3$</td>
-<td>−1</td>
-<td>$(1, 5)$</td>
+<td>1</td>
+<td>5</td>
+<td>2</td>
+<td>p &lt; 0</td>
+<td>5</td>
+<td>-1</td>
+<td>4</td>
 </tr>
 <tr>
 <td>2</td>
-<td>−1</td>
-<td>Yes</td>
-<td><strong>(2, 5)</strong></td>
-<td>$-1 + 2(1) + 3 = -1+2+3$</td>
+<td>2</td>
+<td>5</td>
+<td>3</td>
+<td>p &gt;= 0</td>
 <td>4</td>
-<td>$(2, 5)$</td>
+<td>4</td>
+<td>3</td>
 </tr>
 <tr>
 <td>3</td>
-<td>4</td>
-<td>No</td>
-<td><strong>(3, 4)</strong></td>
-<td>$4 + 2(2) - 2(5) + 5 = 4+4-10+5$</td>
 <td>3</td>
-<td>$(3, 4)$</td>
-</tr>
-<tr>
 <td>4</td>
+<td>4</td>
+<td>p &gt;= 0</td>
 <td>3</td>
-<td>No</td>
-<td><strong>(4, 3)</strong></td>
-<td>$3 + 2(3) - 2(4) + 5 = 3+6-8+5$</td>
+<td>3</td>
 <td>6</td>
-<td>$(4, 3)$</td>
 </tr>
 </tbody>
 </table>
