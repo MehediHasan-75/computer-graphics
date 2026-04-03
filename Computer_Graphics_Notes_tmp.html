@@ -694,17 +694,18 @@ $$\text{step} = \max(|4|, |2|) = \max(4, 2) = 4$$</p>
 $$x_{inc} = \frac{4}{4} = 1.0, \quad y_{inc} = \frac{2}{4} = 0.5$$</p>
 <p><strong>Step 4 — Initialize:</strong> $x = 2.0,\ y = 3.0$</p>
 <p><strong>Step 5 — Iterate</strong> (at each step: plot → add increments):</p>
+<p>| Iter | $x$ | $y$ | $\text{round}(x)$ | $\text{round}(y)$ | Plot | $x_{next}$ | $y_{next}$ |</p>
 <table>
 <thead>
 <tr>
 <th>Iter</th>
 <th>$x$</th>
 <th>$y$</th>
+<th>$x_{next}$</th>
+<th>$y_{next}$</th>
 <th>$\text{round}(x)$</th>
 <th>$\text{round}(y)$</th>
 <th>Plot</th>
-<th>$x_{next}$</th>
-<th>$y_{next}$</th>
 </tr>
 </thead>
 <tbody>
@@ -712,51 +713,51 @@ $$x_{inc} = \frac{4}{4} = 1.0, \quad y_{inc} = \frac{2}{4} = 0.5$$</p>
 <td>0</td>
 <td>2.0</td>
 <td>3.0</td>
+<td>$2.0+1.0=3.0$</td>
+<td>$3.0+0.5=3.5$</td>
 <td>2</td>
 <td>3</td>
 <td><strong>(2,3)</strong></td>
-<td>$2.0+1.0=3.0$</td>
-<td>$3.0+0.5=3.5$</td>
 </tr>
 <tr>
 <td>1</td>
 <td>3.0</td>
 <td>3.5</td>
+<td>$3.0+1.0=4.0$</td>
+<td>$3.5+0.5=4.0$</td>
 <td>3</td>
 <td>4</td>
 <td><strong>(3,4)</strong></td>
-<td>$3.0+1.0=4.0$</td>
-<td>$3.5+0.5=4.0$</td>
 </tr>
 <tr>
 <td>2</td>
 <td>4.0</td>
 <td>4.0</td>
+<td>$4.0+1.0=5.0$</td>
+<td>$4.0+0.5=4.5$</td>
 <td>4</td>
 <td>4</td>
 <td><strong>(4,4)</strong></td>
-<td>$4.0+1.0=5.0$</td>
-<td>$4.0+0.5=4.5$</td>
 </tr>
 <tr>
 <td>3</td>
 <td>5.0</td>
 <td>4.5</td>
+<td>$5.0+1.0=6.0$</td>
+<td>$4.5+0.5=5.0$</td>
 <td>5</td>
 <td>5</td>
 <td><strong>(5,5)</strong></td>
-<td>$5.0+1.0=6.0$</td>
-<td>$4.5+0.5=5.0$</td>
 </tr>
 <tr>
 <td>4</td>
 <td>6.0</td>
 <td>5.0</td>
+<td>—</td>
+<td>—</td>
 <td>6</td>
 <td>5</td>
 <td><strong>(6,5)</strong></td>
-<td>—</td>
-<td>—</td>
 </tr>
 </tbody>
 </table>
@@ -808,7 +809,7 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$</p>
 <th>Step</th>
 <th>x</th>
 <th>y</th>
-<th>$x_{next}</th>
+<th>$x_{next}$</th>
 <th>Action</th>
 <th>$y_{next}$</th>
 <th>p</th>
@@ -860,6 +861,15 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$</p>
 </table>
 <p><strong>Plotted pixels:</strong> (2,3), (3,4), (4,4), (5,5), (6,5)</p>
 <p><strong>Final pixels plotted:</strong> $(2,3),\ (3,4),\ (4,4),\ (5,5),\ (6,5)$</p>
+<p><strong>For $m \ge 1$ (steep lines):</strong></p>
+<ul>
+<li>The roles of $x$ and $y$ swap compared to $m &lt; 1$.</li>
+<li>Increment $y$ each step, and decide whether to increment $x$ based on $P$.</li>
+<li>Initial $P_0 = 2dx - dy$.</li>
+<li>If $P &lt; 0$: $x$ stays, $P = P + 2dx$.</li>
+<li>If $P \ge 0$: $x$ increments, $P = P + 2dx - 2dy$.<br>
+<strong>Memory tip:</strong> When slope flips, $dx$ and $dy$ swap in the formulas.</li>
+</ul>
 <table>
 <thead>
 <tr>

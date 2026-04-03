@@ -261,12 +261,13 @@ $$x_{inc} = \frac{4}{4} = 1.0, \quad y_{inc} = \frac{2}{4} = 0.5$$
 **Step 5 — Iterate** (at each step: plot → add increments):
 
 | Iter | $x$ | $y$ | $\text{round}(x)$ | $\text{round}(y)$ | Plot | $x_{next}$ | $y_{next}$ |
+| Iter | $x$ | $y$ | $x_{next}$ | $y_{next}$ | $\text{round}(x)$ | $\text{round}(y)$ | Plot |
 |---|---|---|---|---|---|---|---|
-| 0 | 2.0 | 3.0 | 2 | 3 | **(2,3)** | $2.0+1.0=3.0$ | $3.0+0.5=3.5$ |
-| 1 | 3.0 | 3.5 | 3 | 4 | **(3,4)** | $3.0+1.0=4.0$ | $3.5+0.5=4.0$ |
-| 2 | 4.0 | 4.0 | 4 | 4 | **(4,4)** | $4.0+1.0=5.0$ | $4.0+0.5=4.5$ |
-| 3 | 5.0 | 4.5 | 5 | 5 | **(5,5)** | $5.0+1.0=6.0$ | $4.5+0.5=5.0$ |
-| 4 | 6.0 | 5.0 | 6 | 5 | **(6,5)** | — | — |
+| 0 | 2.0 | 3.0 | $2.0+1.0=3.0$ | $3.0+0.5=3.5$ | 2 | 3 | **(2,3)** |
+| 1 | 3.0 | 3.5 | $3.0+1.0=4.0$ | $3.5+0.5=4.0$ | 3 | 4 | **(3,4)** |
+| 2 | 4.0 | 4.0 | $4.0+1.0=5.0$ | $4.0+0.5=4.5$ | 4 | 4 | **(4,4)** |
+| 3 | 5.0 | 4.5 | $5.0+1.0=6.0$ | $4.5+0.5=5.0$ | 5 | 5 | **(5,5)** |
+| 4 | 6.0 | 5.0 | — | — | 6 | 5 | **(6,5)** |
 
 | ✅ Advantage | ❌ Disadvantage |
 |---|---|
@@ -300,7 +301,7 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$
 
 **Step 4 — Initialize:** plot $(2, 3)$, then iterate:
 
-| Step | x | y | $x_{next} | Action   | $y_{next}$ | p  | $p_{next}$ |
+| Step | x | y | $x_{next}$ | Action   | $y_{next}$ | p  | $p_{next}$ |
 |------|---|---|-------|----------|-------|----|-------|
 | 0    | 2 | 3 | 3     | y++      | 4     | 0  | -4    |
 | 1    | 3 | 4 | 4     | y stays  | 4     | -4 | 0     |
@@ -311,6 +312,14 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$
 
 
 **Final pixels plotted:** $(2,3),\ (3,4),\ (4,4),\ (5,5),\ (6,5)$
+
+**For $m \ge 1$ (steep lines):**
+- The roles of $x$ and $y$ swap compared to $m < 1$.
+- Increment $y$ each step, and decide whether to increment $x$ based on $P$.
+- Initial $P_0 = 2dx - dy$.
+- If $P < 0$: $x$ stays, $P = P + 2dx$.
+- If $P \ge 0$: $x$ increments, $P = P + 2dx - 2dy$.
+**Memory tip:** When slope flips, $dx$ and $dy$ swap in the formulas.
 
 | ✅ Advantage | ❌ Disadvantage |
 |---|---|
