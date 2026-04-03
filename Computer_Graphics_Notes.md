@@ -437,11 +437,21 @@ Three approaches:
 3. **Bresenham (avoid for arcs):** Must compute entire circle then check bounds — inefficient, risks infinite loop
 
 #### Sectors (Pie Slice)
+
+<p align="center">
+  <img src="public/images/arc_and_sector.png" alt="Scan-converting a sector (pie slice)" width="400"/>
+</p>
+<div align="center"><b>Fig. 3-13</b> Scan-converting a sector (pie slice): (a) shows the arc and sector, (b) shows the angles and endpoints used for filling.</div>
 1. Draw arc from $\theta_1$ to $\theta_2$
 2. Calculate endpoints: $(h + r\cos\theta_1,\ k + r\sin\theta_1)$ and $(h + r\cos\theta_2,\ k + r\sin\theta_2)$
 3. Draw two lines from center to each endpoint (use Bresenham's line)
 
 #### Rectangle (Axis-aligned)
+
+<p align="center">
+  <img src="public/images/scan_converting_ractangle.png" alt="Scan-converting a rectangle" width="500"/>
+</p>
+<div align="center"><b>Fig. 3-16</b> Scan-converting a rectangle: (a) and (b) show how the four corners are used to define the rectangle for filling or drawing edges.</div>
 - Input: two opposite corners $(x_1, y_1)$ and $(x_2, y_2)$
 - Derive: $(x_1, y_2)$ and $(x_2, y_1)$
 - Draw 4 edges using any line algorithm
@@ -457,7 +467,7 @@ Three approaches:
 **Boundary-defined region:** A region enclosed by a specific boundary color, where filling begins from a seed point inside the area and continues outward pixel-by-pixel until the specific boundary color is reached.
 
 <p align="center">
-  <img src="fig3-17_boundary_interior_region.png" alt="Boundary-defined and interior-defined regions" width="500"/>
+  <img src="public/images/boundary_and_interior_defined_region.png" alt="Boundary-defined and interior-defined regions" width="500"/>
 </p>
 <div align="center"><b>Fig. 3-17</b> (a) Boundary-defined region: filling is constrained by a boundary color. (b) Interior-defined region: filling spreads outward from a seed point until the boundary is reached.</div>
 
@@ -469,7 +479,7 @@ Three approaches:
 | **8-Connected** | All 8 surrounding pixels (includes diagonals) |
 
 <p align="center">
-  <img src="fig3-18_pixel_connectivity.png" alt="4-connected vs. 8-connected pixels" width="500"/>
+  <img src="public/images/8connected_4connected.png" alt="4-connected vs. 8-connected pixels" width="500"/>
 </p>
 <div align="center"><b>Fig. 3-18</b> (a) 4-connected neighbors: only up, down, left, right. (b) 8-connected neighbors: includes diagonals. (c) Example showing how connectivity affects region filling.</div>
 

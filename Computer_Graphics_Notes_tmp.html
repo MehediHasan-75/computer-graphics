@@ -1158,23 +1158,27 @@ $$p_0 = 1 - r = 1 - 5 = -4$$</p>
 <li><strong>Bresenham (avoid for arcs):</strong> Must compute entire circle then check bounds — inefficient, risks infinite loop</li>
 </ol>
 <h4 id="sectors-pie-slice">Sectors (Pie Slice)</h4>
-<ol>
-<li>Draw arc from $\theta_1$ to $\theta_2$</li>
-<li>Calculate endpoints: $(h + r\cos\theta_1,\ k + r\sin\theta_1)$ and $(h + r\cos\theta_2,\ k + r\sin\theta_2)$</li>
-<li>Draw two lines from center to each endpoint (use Bresenham's line)</li>
-</ol>
+<p align="center">
+  <img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/arc_and_sector.png" alt="Scan-converting a sector (pie slice)" width="400">
+</p>
+<div align="center"><b>Fig. 3-13</b> Scan-converting a sector (pie slice): (a) shows the arc and sector, (b) shows the angles and endpoints used for filling.</div>
+1. Draw arc from $\theta_1$ to $\theta_2$
+2. Calculate endpoints: $(h + r\cos\theta_1,\ k + r\sin\theta_1)$ and $(h + r\cos\theta_2,\ k + r\sin\theta_2)$
+3. Draw two lines from center to each endpoint (use Bresenham&apos;s line)
 <h4 id="rectangle-axis-aligned">Rectangle (Axis-aligned)</h4>
-<ul>
-<li>Input: two opposite corners $(x_1, y_1)$ and $(x_2, y_2)$</li>
-<li>Derive: $(x_1, y_2)$ and $(x_2, y_1)$</li>
-<li>Draw 4 edges using any line algorithm</li>
-</ul>
+<p align="center">
+  <img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/scan_converting_ractangle.png" alt="Scan-converting a rectangle" width="500">
+</p>
+<div align="center"><b>Fig. 3-16</b> Scan-converting a rectangle: (a) and (b) show how the four corners are used to define the rectangle for filling or drawing edges.</div>
+- Input: two opposite corners $(x_1, y_1)$ and $(x_2, y_2)$
+- Derive: $(x_1, y_2)$ and $(x_2, y_1)$
+- Draw 4 edges using any line algorithm
 <hr>
 <h3 id="region-filling">Region Filling</h3>
 <p><strong>Interior-defined region:</strong> A region where filling begins from a seed point inside the boundary and continues outward until the boundary is reached.</p>
 <p><strong>Boundary-defined region:</strong> A region enclosed by a specific boundary color, where filling begins from a seed point inside the area and continues outward pixel-by-pixel until the specific boundary color is reached.</p>
 <p align="center">
-  <img src="file:///Users/mehedihasan/Projects/computer-graphics/fig3-17_boundary_interior_region.png" alt="Boundary-defined and interior-defined regions" width="500">
+  <img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/boundary_and_interior_defined_region.png" alt="Boundary-defined and interior-defined regions" width="500">
 </p>
 <div align="center"><b>Fig. 3-17</b> (a) Boundary-defined region: filling is constrained by a boundary color. (b) Interior-defined region: filling spreads outward from a seed point until the boundary is reached.</div>
 <h4 id="pixel-connectivity">Pixel Connectivity</h4>
@@ -1197,7 +1201,7 @@ $$p_0 = 1 - r = 1 - 5 = -4$$</p>
 </tbody>
 </table>
 <p align="center">
-  <img src="file:///Users/mehedihasan/Projects/computer-graphics/fig3-18_pixel_connectivity.png" alt="4-connected vs. 8-connected pixels" width="500">
+  <img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/8connected_4connected.png" alt="4-connected vs. 8-connected pixels" width="500">
 </p>
 <div align="center"><b>Fig. 3-18</b> (a) 4-connected neighbors: only up, down, left, right. (b) 8-connected neighbors: includes diagonals. (c) Example showing how connectivity affects region filling.</div>
 <blockquote>
