@@ -838,6 +838,45 @@ This section defines the fundamental operations for manipulating a point $P(x,y)
 
 ---
 
+#### 2D Shearing
+
+Shearing is a transformation that slants the shape of an object. It is similar to how normal text becomes italicized. Shearing can be performed along the x-axis or y-axis, and the equations change depending on which axis is being tilted.
+
+![2D Shearing X-axis example](public/images/2d_shearing_x_axis.png)
+
+**Fig. 4-6:** Shearing a triangle along the X-axis. The $x$ coordinates are updated as $x' = x + Sh_x \cdot y$ while $y$ remains unchanged.
+
+![2D Shearing Y-axis example](public/images/2d_shearing_y_axis.png)
+
+**Fig. 4-7:** Shearing a triangle along the Y-axis. The $y$ coordinates are updated as $y' = y + Sh_y \cdot x$ while $x$ remains unchanged.
+
+**1. Shearing along the X-axis:**
+* $x' = x + (Sh_x \cdot y)$
+* $y' = y$
+
+**2. Shearing along the Y-axis:**
+* $x' = x$
+* $y' = y + (Sh_y \cdot x)$
+
+**Key Point:** The axis not mentioned in the question is the one that remains fixed.
+
+**Practical Example:**
+Given triangle vertices $A(3,4)$, $B(2,2)$, $C(4,2)$:
+
+*For X-axis Shearing ($Sh_x = 1$):*
+  - $A':\ x' = 3 + (1 \times 4) = 7 \rightarrow (7, 4)$
+  - $B':\ x' = 2 + (1 \times 2) = 4 \rightarrow (4, 2)$
+  - $C':\ x' = 4 + (1 \times 2) = 6 \rightarrow (6, 2)$
+
+*For Y-axis Shearing ($Sh_y = 1$):*
+  - $A':\ y' = 4 + (1 \times 3) = 7 \rightarrow (3, 7)$
+  - $B':\ y' = 2 + (1 \times 2) = 4 \rightarrow (2, 4)$
+  - $C':\ y' = 2 + (1 \times 4) = 6 \rightarrow (4, 6)$
+
+> The core takeaway: Identify which axis is fixed and apply the corresponding formula.
+
+---
+
 **4.2 Coordinate Transformations**
 
 Instead of modifying the object's points, a new coordinate system ($x'y'$) is defined relative to the old one ($xy$). Transformations (translation, rotation, scaling, and reflection) are applied to the axes, which inversely affects the coordinate descriptions of the stationary points.
@@ -851,3 +890,108 @@ Instead of modifying the object's points, a new coordinate system ($x'y'$) is de
 **4.4 Instance Transformations**
 * **Instances:** A complex picture often uses the same object multiple times (e.g., a wheel on a car). An object is defined once in its own local coordinate system, and an **instance transformation** converts those local coordinates into the master "picture" coordinates. This typically involves scaling, rotating, and translating the object into its proper place.
 * **Multilevel/Nested Structures:** Objects can be made of sub-objects (e.g., apples on a branch, branch on a tree). To render these efficiently, instance transformations are concatenated across levels so that the lowest-level object is transformed directly into the final picture coordinates in one step.
+
+Here is an exam-oriented summary of Chapter 5, which focuses on selecting and mapping a portion of a 2D scene onto a display device, along with the algorithms required to trim objects that fall outside the viewing area.
+
+### Chapter 5: Two-Dimensional Viewing and Clipping
+
+**Introduction to Viewing**
+* **World Coordinate System (WCS):** The master coordinate system where the entire scene is modeled.
+* **Window:** A rectangular region in the WCS used to select the specific portion of the scene to be displayed.
+* **Normalized Device Coordinate System (NDCS):** A device-independent coordinate system (typically a $1 \times 1$ unit square) that represents the virtual display area.
+* **Viewport:** A specific rectangular sub-region within the NDCS where the contents of the window are mapped.
+* **Viewing Transformation:** The overall process of mapping coordinates from the WCS to the physical device. It involves two steps: **Window-to-Viewport mapping** (WCS to NDCS) and **Workstation transformation** (NDCS to actual device/pixel coordinates).
+
+**5.1 Window-to-Viewport Mapping**
+* This mapping translates and scales coordinates $(wx, wy)$ from the window to coordinates $(vx, vy)$ in the viewport.
+* It operates on the principle of maintaining relative placement (e.g., if a point is dead center in the window, it must be dead center in the viewport).
+* **Geometric Distortion:** Occurs if the aspect ratio (width-to-height ratio) of the window does not match the aspect ratio of the viewport, causing objects to stretch or compress.
+
+**5.2 & 5.3 Point and Line Clipping**
+Clipping is the process of eliminating objects or portions of objects that lie outside the viewing window.
+* **Point Clipping:** Simply evaluates if a point's coordinates satisfy $x_{min} \le x \le x_{max}$ and $y_{min} \le y \le y_{max}$.
+* **Cohen-Sutherland Line Clipping:**
+    * Assigns a **4-bit region code** (Top, Bottom, Right, Left) to each endpoint of a line based on its position relative to the window. (e.g., 0000 means inside).
+    * *Trivial Accept:* If both codes are 0000, the line is fully visible.
+    * *Trivial Reject:* If the bitwise logical AND of the two codes is not 0000, the line is completely outside.
+    * *Candidate:* If neither, the line intersects a boundary. The algorithm iteratively finds the intersection point, clips the outside portion, and re-evaluates the new endpoint's code.
+* **Midpoint Subdivision Line Clipping:**
+    * Uses a binary search approach. A line spanning the boundary is repeatedly bisected at its midpoint into two segments. Segments are categorized using region codes until they are reduced to pixel-sized visible fragments or discarded as invisible.
+* **Liang-Barsky Line Clipping:**
+    * A highly efficient algorithm based on the **parametric equation of a line** ($x = x_1 + \Delta x \cdot u$, $y = y_1 + \Delta y \cdot u$, for $0 \le u \le 1$).
+    * It calculates the intersection parameter $u$ for all four window boundaries. It tracks the maximum entering $u$ value and the minimum exiting $u$ value to determine the visible segment of the line.
+
+**5.4 Polygon Clipping**
+* **Sutherland-Hodgman Algorithm:**
+    * A pipeline approach that clips an entire polygon against one window boundary edge at a time.
+    * For each polygon edge, it evaluates 4 cases: (1) Both ends inside $\rightarrow$ output 2nd point. (2) Both outside $\rightarrow$ output nothing. (3) Inside to outside $\rightarrow$ output intersection point. (4) Outside to inside $\rightarrow$ output intersection, then 2nd point.
+    * *Drawback:* Can produce unwanted "extraneous edges" connecting disjoint parts when a concave polygon is clipped into multiple pieces.
+* **Weiler-Atherton Algorithm:**
+    * Solves the extraneous edge problem.
+    * It works by tracing the border of the subject polygon. When the border exits the clipping window, the algorithm makes a "right turn" to trace the clipping window's border instead. When it re-enters, it turns back to trace the subject polygon. This creates perfectly closed sub-polygons for output.
+
+**5.5 The 2D Graphics Pipeline & Animation Concepts**
+* **The Pipeline:** Data flows through sequential stages: *Object Definition $\rightarrow$ Modeling Transformation $\rightarrow$ Viewing Transformation $\rightarrow$ Scan Conversion $\rightarrow$ Frame Buffer Display*.
+* **Panning & Zooming:** Panning is achieved by translating the window across the WCS. Zooming is achieved by decreasing (zoom in) or increasing (zoom out) the size of the window relative to the viewport.
+* **Double Buffering:** An animation technique using two frame buffers. The system displays one buffer while drawing the next frame invisibly in the second buffer. Once drawn, the buffers are swapped to eliminate screen flicker.
+* **Lookup Table Animation:** Also known as color cycling. Instead of redrawing an object to move it, the object is pre-drawn in multiple frames. The lookup table is then updated sequentially to change the colors of the frames from "background color" to "visible color", simulating fast, smooth motion.
+
+### Chapter 6: Three-Dimensional Transformations
+
+**Introduction**
+Moving from 2D to 3D graphics requires manipulating objects in three-dimensional space. Just like in 2D, this is achieved through transformations, but it requires upgrading from $3 \times 3$ to **$4 \times 4$ homogeneous coordinate matrices** so that translation, scaling, and rotation can all be combined via matrix multiplication.
+
+**6.1 Geometric Transformations**
+This perspective assumes the coordinate system remains stationary while the object itself is moved. 
+* **Translation:** Displacing an object by a given distance and direction, prescribed by a 3D vector $V = aI + bJ + cK$. In $4 \times 4$ matrix form, the displacement values $a, b,$ and $c$ occupy the rightmost column.
+* **Scaling:** Expanding or compressing an object with respect to the origin using three scale factors: $s_x$, $s_y$, and $s_z$. If the scale factor $s > 1$, it is a magnification; if $s < 1$, it is a reduction.
+* **Rotation:** 3D rotation is significantly more complex than 2D rotation. While 2D rotation only requires an angle and a center point, 3D rotation requires an angle ($\theta$) and an **axis of rotation**. 
+    * *Canonical Rotations:* These are rotations around one of the standard positive coordinate axes (the x-axis, y-axis, or z-axis). The direction of a positive angle is determined by the right-hand rule with respect to the axis of rotation.
+    * *Arbitrary Axis Rotation:* Rotating an object around a non-standard axis requires a sequence of transformations: translating the object to the origin, rotating the axis so it aligns with a standard axis (like the z-axis), performing the desired rotation, and then applying the inverse operations to place the object back.
+
+**6.2 Coordinate Transformations**
+This perspective assumes the object remains perfectly stationary while the observer (or the coordinate system) is moved around it. 
+* Calculating the new coordinates of an object relative to the shifted observer is mathematically equivalent to applying the **inverse** geometric transformation to the object. (e.g., If the observer moves 5 units forward, it is mathematically identical to the object moving 5 units backward).
+
+**6.3 Composite Transformations**
+* Complex movements are built by stringing together basic transformations (translation, scaling, and rotation) through a process called **composition of functions**, which in computer graphics is handled via matrix multiplication (concatenation).
+* Because 3D transformations use $4 \times 4$ matrices, they can all be seamlessly multiplied together to form a single Composite Transformation Matrix (CTM), allowing complex multi-step manipulations to be calculated in a single mathematical step.
+
+**6.4 Instance Transformations**
+* In complex 3D scenes, an object (like a chair) is typically modeled only once in its own local "object coordinate space."
+* To place multiple copies (instances) of this chair into a master "scene coordinate space," an **instance transformation** is applied. This is a specific composite transformation matrix that scales, rotates, and translates the generic chair into its specific final position, size, and orientation within the room.
+
+Here is an exam-oriented summary of Chapter 7, which introduces the mathematics and fundamental concepts of projecting 3D objects onto a 2D display surface.
+
+### Chapter 7: Mathematics of Projection
+
+**Introduction to Projection**
+* **Definition:** Projection is the process of mapping a 3D point $P(x,y,z)$ onto its 2D image $P'(x',y',z')$ in a projection plane (or view plane)[cite: 12]. 
+* **Projector:** The mapping is determined by a projection line, called a projector, that passes through the 3D object point and intersects the view plane[cite: 12].
+* **Fundamental Divisions:** There are two basic methods of projection: **Perspective** (which shows an object realistically as it appears to the eye) and **Parallel** (which preserves the object's true size and shape)[cite: 12].
+
+**7.1 & 7.2 Perspective Projection**
+In perspective projection, all projectors converge at a single point called the **center of projection** (similar to the eye of an observer or a camera lens)[cite: 12]. 
+* **Characteristics:**
+    * **Perspective Foreshortening:** Objects appear smaller as their distance from the center of projection increases[cite: 12].
+    * **Vanishing Points:** Parallel lines that are not parallel to the view plane appear to converge and meet at a "vanishing point"[cite: 12]. 
+    * **Principal Vanishing Points:** Formed by the apparent intersection of lines parallel to the principal $x$, $y$, or $z$ axes[cite: 12]. Projections are classified as *One-point*, *Two-point*, or *Three-point* perspective depending on how many principal axes the view plane intersects[cite: 12].
+* **Mathematical Description:** Because perspective transformation is non-linear (it involves dividing by the $z$-depth), it cannot be represented by a standard $3 \times 3$ matrix. Instead, it requires a **$4 \times 4$ homogeneous coordinate matrix** to calculate the transformation[cite: 12].
+* **Perspective Anomalies:** While enhancing realism, this projection causes distortions:
+    1. *Foreshortening:* Size diminishes with distance[cite: 12].
+    2. *Vanishing Points:* Parallel lines appear to intersect[cite: 12].
+    3. *View Confusion:* Objects behind the center of projection can incorrectly be projected upside down and backward[cite: 12].
+    4. *Topological Distortion:* A finite line crossing the plane parallel to the view plane (at the center of projection) projects to infinity, tearing the line into two disconnected infinite segments[cite: 12].
+
+**7.3 Parallel Projection**
+In parallel projection, the projectors are all strictly parallel to each other, sharing a fixed **direction of projection**[cite: 12]. This method is heavily used in engineering and drafting because it preserves true dimensions and shapes[cite: 12].
+
+* **Orthographic Projection:** The direction of projection is exactly **perpendicular** to the view plane[cite: 12].
+    * *Multiview:* The view plane is parallel to the principal planes (e.g., standard front, top, and side architectural views)[cite: 12].
+    * *Axonometric:* The view plane is not parallel to the principal planes[cite: 12]. 
+        * **Isometric:** The projection makes equal angles with all three principal axes[cite: 12].
+        * **Dimetric:** Makes equal angles with exactly two principal axes[cite: 12].
+        * **Trimetric:** Makes unequal angles with all three axes[cite: 12].
+* **Oblique Projection:** The direction of projection is **not perpendicular** to the view plane[cite: 12].
+    * **Cavalier:** The projection angle is chosen (typically $45^\circ$) so that lines perpendicular to the projection plane are *not foreshortened* at all (scale is 1:1)[cite: 12].
+    * **Cabinet:** The projection angle is chosen (typically $30^\circ$ or $63.4^\circ$) so that lines perpendicular to the projection plane are foreshortened by exactly **half** their length, which often looks more natural than Cavalier[cite: 12].
