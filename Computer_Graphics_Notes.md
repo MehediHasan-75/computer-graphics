@@ -438,20 +438,18 @@ Three approaches:
 
 #### Sectors (Pie Slice)
 
-<p align="center">
-  <img src="public/images/arc_and_sector.png" alt="Scan-converting a sector (pie slice)" width="400"/>
-</p>
-<div align="center"><b>Fig. 3-13</b> Scan-converting a sector (pie slice): (a) shows the arc and sector, (b) shows the angles and endpoints used for filling.</div>
+![Scan-converting a sector (pie slice)](public/images/arc_and_sector.png)
+
+**Fig. 3-13:** Scan-converting a sector (pie slice): (a) shows the arc and sector, (b) shows the angles and endpoints used for filling.
 1. Draw arc from $\theta_1$ to $\theta_2$
 2. Calculate endpoints: $(h + r\cos\theta_1,\ k + r\sin\theta_1)$ and $(h + r\cos\theta_2,\ k + r\sin\theta_2)$
 3. Draw two lines from center to each endpoint (use Bresenham's line)
 
 #### Rectangle (Axis-aligned)
 
-<p align="center">
-  <img src="public/images/scan_converting_ractangle.png" alt="Scan-converting a rectangle" width="500"/>
-</p>
-<div align="center"><b>Fig. 3-16</b> Scan-converting a rectangle: (a) and (b) show how the four corners are used to define the rectangle for filling or drawing edges.</div>
+![Scan-converting a rectangle](public/images/scan_converting_ractangle.png)
+
+**Fig. 3-16:** Scan-converting a rectangle: (a) and (b) show how the four corners are used to define the rectangle for filling or drawing edges.
 - Input: two opposite corners $(x_1, y_1)$ and $(x_2, y_2)$
 - Derive: $(x_1, y_2)$ and $(x_2, y_1)$
 - Draw 4 edges using any line algorithm
@@ -466,10 +464,9 @@ Three approaches:
 
 **Boundary-defined region:** A region enclosed by a specific boundary color, where filling begins from a seed point inside the area and continues outward pixel-by-pixel until the specific boundary color is reached.
 
-<p align="center">
-  <img src="public/images/boundary_and_interior_defined_region.png" alt="Boundary-defined and interior-defined regions" width="500"/>
-</p>
-<div align="center"><b>Fig. 3-17</b> (a) Boundary-defined region: filling is constrained by a boundary color. (b) Interior-defined region: filling spreads outward from a seed point until the boundary is reached.</div>
+![Boundary-defined and interior-defined regions](public/images/boundary_and_interior_defined_region.png)
+
+**Fig. 3-17:** (a) Boundary-defined region: filling is constrained by a boundary color. (b) Interior-defined region: filling spreads outward from a seed point until the boundary is reached.
 
 #### Pixel Connectivity
 
@@ -478,10 +475,9 @@ Three approaches:
 | **4-Connected** | Up, Down, Left, Right only |
 | **8-Connected** | All 8 surrounding pixels (includes diagonals) |
 
-<p align="center">
-  <img src="public/images/8connected_4connected.png" alt="4-connected vs. 8-connected pixels" width="500"/>
-</p>
-<div align="center"><b>Fig. 3-18</b> (a) 4-connected neighbors: only up, down, left, right. (b) 8-connected neighbors: includes diagonals. (c) Example showing how connectivity affects region filling.</div>
+![4-connected vs. 8-connected pixels](public/images/8connected_4connected.png)
+
+**Fig. 3-18:** (a) 4-connected neighbors: only up, down, left, right. (b) 8-connected neighbors: includes diagonals. (c) Example showing how connectivity affects region filling.
 
 > **Critical rule:** If boundary is 8-connected → fill must be 4-connected, and vice versa (prevents leaking).
 
@@ -520,15 +516,13 @@ Used when region is defined by a uniform **interior color** (e.g., paint bucket 
 
 #### 3. Scanline Fill (Optimized Polygon Fill)
 
-<p align="center">
-  <img src="public/images/scan_conversion_polygon.png" alt="Scan-converting a polygonal region" width="500"/>
-</p>
-<div align="center"><b>Fig. 3-19</b> Scan-converting a polygonal region.</div>
+![Scan-converting a polygonal region](public/images/scan_conversion_polygon.png)
 
-<p align="center">
-  <img src="public/images/scan_converted_edge_list.png" alt="Edge list for scanline fill" width="500"/>
-</p>
-<div align="center"><b>Table 3-1</b> An edge list for scanline fill.</div>
+**Fig. 3-19:** Scan-converting a polygonal region.
+
+![Edge list for scanline fill](public/images/scan_converted_edge_list.png)
+
+**Table 3-1:** An edge list for scanline fill.
 
 Fills row-by-row using the polygon's geometric edge data. Eliminates recursion.
 
@@ -685,15 +679,13 @@ Fills row-by-row using the polygon's geometric edge data. Eliminates recursion.
 | **Moire Pattern** | Interferance occur when high frequency texture are sampled |
 
 
-<p align="center">
-  <img src="public/images/unequeal_brightness.png" alt="Pixel spacing and aliasing in line drawing" width="400"/>
-</p>
-<div align="center"><b>Fig. </b>Unequal Brightness</div>
+![Pixel spacing and aliasing in line drawing](public/images/unequeal_brightness.png)
 
-<p align="center">
-  <img src="public/images/picket_fenc_problem.png" alt="Scan-converting an outline font" width="500"/>
-</p>
-<div align="center"><b>Fig. </b> Picket Fence Problem with the outline font.<br> 
+**Fig.:** Unequal Brightness
+
+![Scan-converting an outline font](public/images/picket_fenc_problem.png)
+
+**Fig.:** Picket Fence Problem with the outline font.
 Suppose we want to scan-convert the uppercase character "E" in (a) from its outline description to a bitmap consisting of pixels inside the region defined by the outline. The result in (b) exhibits both asymmetry (the upper arm of the character is twice as thick as the other parts) and dropout (the middle arm is absent). A slight adjustment and/or realignment of the outline can lead to a reasonable outcome (c).</div>
 
 ### **. Why Anti-Aliasing is Needed**
@@ -796,3 +788,57 @@ Background → Dark Gray → Gray → White (center of line)
 **In short:**
 Anti-aliasing tricks your eyes by **blending colors, averaging sub-pixels, or shifting pixels slightly**, so edges appear **smooth and natural**, even on low-resolution screens.
 
+### Chapter 4: Two-Dimensional Transformations
+
+**Introduction**
+Transformation is the mathematical process of simulating the spatial manipulation of objects. There are two primary viewpoints for transformations:
+1.  **Geometric Transformation:** The coordinate system remains stationary, and the object itself is moved or altered.
+2.  **Coordinate Transformation:** The object remains stationary, and the coordinate system is moved or altered around it.
+
+**4.1 Geometric Transformations**
+This section defines the fundamental operations for manipulating a point $P(x,y)$ to a new position $P'(x',y')$:
+* **Translation ($T_v$):** Displacing an object by a specific distance and direction using a vector. 
+    * $x' = x + t_x$ and $y' = y + t_y$
+
+    ![Translation transformation illustration](public/images/Translation.png)
+
+    **Fig. 4-2:** Translation of an object by vector $\vec{v}$, moving point $P$ to $P'$.
+* **Rotation ($R_\theta$):** Rotating an object $\theta^\circ$ about the origin. Counterclockwise is positive, and clockwise is negative.
+    * $x' = x\cos\theta - y\sin\theta$ and $y' = x\sin\theta + y\cos\theta$
+
+    ![Rotation transformation illustration](public/images/Rotation.png)
+
+    **Fig. 4-3:** Rotation of an object by $\theta$ degrees, moving point $P$ to $P'$.
+* **Scaling ($S_{s_x, s_y}$):** Expanding or compressing an object using scaling constants $s_x$ and $s_y$. Only the origin remains fixed. Uniform scaling occurs when $s_x = s_y$.
+    * $x' = s_x x$ and $y' = s_y y$
+
+    ![Scaling transformation illustration](public/images/scaling_example.png)
+
+    **Fig. 4-4:** scaling transformation with scaling factors $s_x = 2$ and $s_y = 1/2$.
+* **Mirror Reflection ($M$):** Creating a mirrored image of an object across an axis (e.g., about the x-axis: $x' = x$ and $y' = -y$).
+
+  ![Mirror reflection illustration](public/images/mirror_reflection.png)
+
+  **Fig. 4-5:** Mirror reflection of a point $P(x, y)$ across the x-axis and y-axis, resulting in $P'(x, -y)$ and $P'(-x, y)$.
+* **Inverse Transformations:** Every geometric transformation has a direct inverse that reverses the operation (e.g., the inverse of translating by $v$ is translating by $-v$).
+
+  - **Translation:** $T_{-v}$ is the inverse of $T_v$ (translation by $-v$ reverses translation by $v$).
+  - **Rotation:** $R_{-\theta}$ is the inverse of $R_{\theta}$ (rotation by $-\theta$ undoes rotation by $\theta$).
+  - **Scaling:** $S_{1/s_x, 1/s_y}$ is the inverse of $S_{s_x, s_y}$ (scaling by the reciprocal factors undoes the original scaling).
+  - **Mirror Reflection:** The inverse of a mirror reflection is itself (applying the same reflection twice returns the object to its original position).
+
+---
+
+**4.2 Coordinate Transformations**
+
+Instead of modifying the object's points, a new coordinate system ($x'y'$) is defined relative to the old one ($xy$). Transformations (translation, rotation, scaling, and reflection) are applied to the axes, which inversely affects the coordinate descriptions of the stationary points.
+
+**4.3 Composite Transformations & Homogeneous Coordinates**
+* **Composition:** Complex transformations are built by stringing together basic transformations. For example, to magnify an object while keeping its center $C(h,k)$ fixed, you must: (1) Translate the object so $C$ is at the origin, (2) Scale it, and (3) Translate it back to its original position.
+* **Matrix Representation:** Rotation, scaling, and reflection can be represented as $2 \times 2$ matrices, but translation cannot. 
+* **Homogeneous Coordinates:** To allow all transformations (including translation) to be treated as matrix multiplications, points are represented as 3D vectors $[x, y, 1]^T$, and transformations are upgraded to **$3 \times 3$ matrices**.
+* **Composite Transformation Matrix (CTM):** Because all basic transformations are now $3 \times 3$ matrices, they can be multiplied (concatenated) together into a single CTM, which is highly computationally efficient. 
+
+**4.4 Instance Transformations**
+* **Instances:** A complex picture often uses the same object multiple times (e.g., a wheel on a car). An object is defined once in its own local coordinate system, and an **instance transformation** converts those local coordinates into the master "picture" coordinates. This typically involves scaling, rotating, and translating the object into its proper place.
+* **Multilevel/Nested Structures:** Objects can be made of sub-objects (e.g., apples on a branch, branch on a tree). To render these efficiently, instance transformations are concatenated across levels so that the lowest-level object is transformed directly into the final picture coordinates in one step.
