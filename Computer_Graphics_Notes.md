@@ -494,12 +494,12 @@ Used when region is defined by a uniform **interior color** (e.g., paint bucket 
 #### 3. Scanline Fill (Optimized Polygon Fill)
 
 <p align="center">
-  <img src="scan_conversion_polygon.png" alt="Scan-converting a polygonal region" width="500"/>
+  <img src="public/images/scan_conversion_polygon.png" alt="Scan-converting a polygonal region" width="500"/>
 </p>
 <div align="center"><b>Fig. 3-19</b> Scan-converting a polygonal region.</div>
 
 <p align="center">
-  <img src="tscan_converted_edge_list.png" alt="Edge list for scanline fill" width="500"/>
+  <img src="public/images/scan_converted_edge_list.png" alt="Edge list for scanline fill" width="500"/>
 </p>
 <div align="center"><b>Table 3-1</b> An edge list for scanline fill.</div>
 
