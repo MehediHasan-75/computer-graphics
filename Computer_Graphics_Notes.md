@@ -300,7 +300,7 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$
 
 **Step 4 — Initialize:** plot $(2, 3)$, then iterate:
 
-| Step | x | y | xnext | Action   | ynext | p  | pnext |
+| Step | x | y | $x_{next} | Action   | $y_{next}$ | p  | $p_{next}$ |
 |------|---|---|-------|----------|-------|----|-------|
 | 0    | 2 | 3 | 3     | y++      | 4     | 0  | -4    |
 | 1    | 3 | 4 | 4     | y stays  | 4     | -4 | 0     |
