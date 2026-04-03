@@ -825,6 +825,10 @@ This section defines the fundamental operations for manipulating a point $P(x,y)
   ![Mirror reflection illustration](public/images/mirror_reflection.png)
 
   **Fig. 4-5:** Mirror reflection of a point $P(x, y)$ across the x-axis and y-axis, resulting in $P'(x, -y)$ and $P'(-x, y)$.
+
+    ![2D Reflection example](public/images/reflection.png)
+
+    **Fig. 4-5b:** Example of 2D reflection of a triangle about the x-axis and y-axis, showing coordinate changes and formulas for both axes.
 * **Inverse Transformations:** Every geometric transformation has a direct inverse that reverses the operation (e.g., the inverse of translating by $v$ is translating by $-v$).
 
   - **Translation:** $T_{-v}$ is the inverse of $T_v$ (translation by $-v$ reverses translation by $v$).
