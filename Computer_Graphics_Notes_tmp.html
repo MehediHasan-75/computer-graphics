@@ -366,9 +366,7 @@ code {
 </head>
 
 <body>
-    <h1 id="computer-graphics--structured-notes">Computer Graphics — Structured Notes</h1>
-<hr>
-<h2 id="chapter-1-introduction">Chapter 1: Introduction</h2>
+    <h2 id="chapter-1-introduction">Chapter 1: Introduction</h2>
 <h3 id="object-space-vs-image-space">Object Space vs. Image Space</h3>
 <table>
 <thead>
@@ -603,7 +601,7 @@ $$X_{pixel} = \lfloor 10.8 \rfloor = 10, \quad Y_{pixel} = \lfloor 21.2 \rfloor 
 <li>Compute y-intercept: $b = y_1 - m \cdot x_1$</li>
 <li>For each integer $x$ from $x_1$ to $x_2$: compute $y = mx + b$, round to nearest integer, plot $(x, \text{round}(y))$</li>
 </ol>
-<p><strong>Full Worked Example — Line from (2, 3) to (6, 5):</strong></p>
+<p><strong>Example — Line from (2, 3) to (6, 5):</strong></p>
 <p><strong>Step 1 — Calculate slope:</strong><br>
 $$m = \frac{5 - 3}{6 - 2} = \frac{2}{4} = 0.5$$</p>
 <p><strong>Step 2 — Calculate y-intercept:</strong><br>
@@ -685,7 +683,7 @@ $$b = y_1 - m \cdot x_1 = 3 - (0.5 \times 2) = 3 - 1 = 2$$</p>
 <li>Initialize: $x = x_1$, $y = y_1$</li>
 <li>For each iteration: plot $(\text{round}(x), \text{round}(y))$, then $x = x + x_{inc}$, $y = y + y_{inc}$</li>
 </ol>
-<p><strong>Full Worked Example — Line from (2, 3) to (6, 5):</strong></p>
+<p><strong>Example — Line from (2, 3) to (6, 5):</strong></p>
 <p><strong>Step 1 — Compute differences:</strong><br>
 $$dx = 6 - 2 = 4, \quad dy = 5 - 3 = 2$$</p>
 <p><strong>Step 2 — Determine step count:</strong><br>
@@ -794,7 +792,7 @@ $$x_{inc} = \frac{4}{4} = 1.0, \quad y_{inc} = \frac{2}{4} = 0.5$$</p>
 </li>
 <li>Repeat until $x = x_2$</li>
 </ol>
-<p><strong>Full Worked Example — Line from (2, 3) to (6, 5):</strong></p>
+<p><strong>Example — Line from (2, 3) to (6, 5):</strong></p>
 <p><strong>Step 1 — Compute differences:</strong><br>
 $$dx = 6 - 2 = 4, \quad dy = 5 - 3 = 2$$</p>
 <p><strong>Step 2 — Pre-compute constants:</strong><br>
@@ -957,7 +955,7 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$</p>
 <li>If $d \geq 0$: $y = y - 1$, $d = d + 4x - 4y + 10$</li>
 <li>Always: $x = x + 1$</li>
 </ul>
-<p><strong>Full Worked Example — Circle with $r = 5$, centered at $(0,0)$:</strong></p>
+<p><strong>Example — Circle with $r = 5$, centered at $(0,0)$:</strong></p>
 <p><strong>Step 1 — Initialize:</strong><br>
 $$x = 0, \quad y = 5$$<br>
 $$d_0 = 3 - 2(5) = 3 - 10 = -7$$</p>
@@ -1030,7 +1028,7 @@ $$d_0 = 3 - 2(5) = 3 - 10 = -7$$</p>
 <li>If $p \geq 0$: $y = y - 1$, $p = p + 2x - 2y + 5$</li>
 <li>Always: $x = x + 1$</li>
 </ul>
-<p><strong>Full Worked Example — Circle with $r = 5$, centered at $(0,0)$:</strong></p>
+<p><strong>Example — Circle with $r = 5$, centered at $(0,0)$:</strong></p>
 <p><strong>Step 1 — Initialize:</strong><br>
 $$x = 0, \quad y = 5$$<br>
 $$p_0 = 1 - r = 1 - 5 = -4$$</p>

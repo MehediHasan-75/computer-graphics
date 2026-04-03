@@ -1,7 +1,3 @@
-# Computer Graphics — Structured Notes
-
----
-
 ## Chapter 1: Introduction
 
 ### Object Space vs. Image Space
@@ -211,7 +207,7 @@ $$X_{pixel} = \lfloor 10.8 \rfloor = 10, \quad Y_{pixel} = \lfloor 21.2 \rfloor 
 2. Compute y-intercept: $b = y_1 - m \cdot x_1$
 3. For each integer $x$ from $x_1$ to $x_2$: compute $y = mx + b$, round to nearest integer, plot $(x, \text{round}(y))$
 
-**Full Worked Example — Line from (2, 3) to (6, 5):**
+**Example — Line from (2, 3) to (6, 5):**
 
 **Step 1 — Calculate slope:**
 $$m = \frac{5 - 3}{6 - 2} = \frac{2}{4} = 0.5$$
@@ -245,7 +241,7 @@ $$b = y_1 - m \cdot x_1 = 3 - (0.5 \times 2) = 3 - 1 = 2$$
 4. Initialize: $x = x_1$, $y = y_1$
 5. For each iteration: plot $(\text{round}(x), \text{round}(y))$, then $x = x + x_{inc}$, $y = y + y_{inc}$
 
-**Full Worked Example — Line from (2, 3) to (6, 5):**
+**Example — Line from (2, 3) to (6, 5):**
 
 **Step 1 — Compute differences:**
 $$dx = 6 - 2 = 4, \quad dy = 5 - 3 = 2$$
@@ -287,7 +283,7 @@ $$x_{inc} = \frac{4}{4} = 1.0, \quad y_{inc} = \frac{2}{4} = 0.5$$
    - If $P_n \geq 0$: $y = y + 1$, $P_{n+1} = P_n + 2dy - 2dx$
 5. Repeat until $x = x_2$
 
-**Full Worked Example — Line from (2, 3) to (6, 5):**
+**Example — Line from (2, 3) to (6, 5):**
 
 **Step 1 — Compute differences:**
 $$dx = 6 - 2 = 4, \quad dy = 5 - 3 = 2$$
@@ -360,7 +356,7 @@ Compute one octant ($x \leq y$), mirror to get 8 points:
 - If $d \geq 0$: $y = y - 1$, $d = d + 4x - 4y + 10$
 - Always: $x = x + 1$
 
-**Full Worked Example — Circle with $r = 5$, centered at $(0,0)$:**
+**Example — Circle with $r = 5$, centered at $(0,0)$:**
 
 **Step 1 — Initialize:**
 $$x = 0, \quad y = 5$$
@@ -391,7 +387,7 @@ $$d_0 = 3 - 2(5) = 3 - 10 = -7$$
 - If $p \geq 0$: $y = y - 1$, $p = p + 2x - 2y + 5$
 - Always: $x = x + 1$
 
-**Full Worked Example — Circle with $r = 5$, centered at $(0,0)$:**
+**Example — Circle with $r = 5$, centered at $(0,0)$:**
 
 **Step 1 — Initialize:**
 $$x = 0, \quad y = 5$$
