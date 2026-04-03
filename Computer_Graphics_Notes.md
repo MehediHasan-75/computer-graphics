@@ -300,13 +300,15 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$
 
 **Step 4 — Initialize:** plot $(2, 3)$, then iterate:
 
-| Step | Current $(x,y)$ | $P_n$ | $P_n < 0$? | Decision | Next $(x,y)$ | $P_{n+1}$ calculation | $P_{n+1}$ |
-|---|---|---|---|---|---|---|---|
-| Init | (2, 3) | — | — | — | — | $P_0 = 0$ | 0 |
-| 1 | (2,3) plotted | 0 | No ($\geq 0$) | $y$ increments | (3, 4) | $0 + (-4)$ | −4 |
-| 2 | (3,4) plotted | −4 | Yes | $y$ stays | (4, 4) | $-4 + 4$ | 0 |
-| 3 | (4,4) plotted | 0 | No ($\geq 0$) | $y$ increments | (5, 5) | $0 + (-4)$ | −4 |
-| 4 | (5,5) plotted | −4 | Yes | $y$ stays | (6, 5) | end | — |
+| Step | x | y | xnext | Action   | ynext | p  | pnext |
+|------|---|---|-------|----------|-------|----|-------|
+| 0    | 2 | 3 | 3     | y++      | 4     | 0  | -4    |
+| 1    | 3 | 4 | 4     | y stays  | 4     | -4 | 0     |
+| 2    | 4 | 4 | 5     | y++      | 5     | 0  | -4    |
+| 3    | 5 | 5 | 6     | y stays  | 5     | -4 | —     |
+
+**Plotted pixels:** (2,3), (3,4), (4,4), (5,5), (6,5)
+
 
 **Final pixels plotted:** $(2,3),\ (3,4),\ (4,4),\ (5,5),\ (6,5)$
 

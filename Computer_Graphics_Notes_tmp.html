@@ -806,68 +806,59 @@ $$P_0 = 2dy - dx = 4 - 4 = 0$$</p>
 <thead>
 <tr>
 <th>Step</th>
-<th>Current $(x,y)$</th>
-<th>$P_n$</th>
-<th>$P_n &lt; 0$?</th>
-<th>Decision</th>
-<th>Next $(x,y)$</th>
-<th>$P_{n+1}$ calculation</th>
-<th>$P_{n+1}$</th>
+<th>x</th>
+<th>y</th>
+<th>xnext</th>
+<th>Action</th>
+<th>ynext</th>
+<th>p</th>
+<th>pnext</th>
 </tr>
 </thead>
 <tbody>
 <tr>
-<td>Init</td>
-<td>(2, 3)</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>—</td>
-<td>$P_0 = 0$</td>
 <td>0</td>
+<td>2</td>
+<td>3</td>
+<td>3</td>
+<td>y++</td>
+<td>4</td>
+<td>0</td>
+<td>-4</td>
 </tr>
 <tr>
 <td>1</td>
-<td>(2,3) plotted</td>
+<td>3</td>
+<td>4</td>
+<td>4</td>
+<td>y stays</td>
+<td>4</td>
+<td>-4</td>
 <td>0</td>
-<td>No ($\geq 0$)</td>
-<td>$y$ increments</td>
-<td>(3, 4)</td>
-<td>$0 + (-4)$</td>
-<td>−4</td>
 </tr>
 <tr>
 <td>2</td>
-<td>(3,4) plotted</td>
-<td>−4</td>
-<td>Yes</td>
-<td>$y$ stays</td>
-<td>(4, 4)</td>
-<td>$-4 + 4$</td>
+<td>4</td>
+<td>4</td>
+<td>5</td>
+<td>y++</td>
+<td>5</td>
 <td>0</td>
+<td>-4</td>
 </tr>
 <tr>
 <td>3</td>
-<td>(4,4) plotted</td>
-<td>0</td>
-<td>No ($\geq 0$)</td>
-<td>$y$ increments</td>
-<td>(5, 5)</td>
-<td>$0 + (-4)$</td>
-<td>−4</td>
-</tr>
-<tr>
-<td>4</td>
-<td>(5,5) plotted</td>
-<td>−4</td>
-<td>Yes</td>
-<td>$y$ stays</td>
-<td>(6, 5)</td>
-<td>end</td>
+<td>5</td>
+<td>5</td>
+<td>6</td>
+<td>y stays</td>
+<td>5</td>
+<td>-4</td>
 <td>—</td>
 </tr>
 </tbody>
 </table>
+<p><strong>Plotted pixels:</strong> (2,3), (3,4), (4,4), (5,5), (6,5)</p>
 <p><strong>Final pixels plotted:</strong> $(2,3),\ (3,4),\ (4,4),\ (5,5),\ (6,5)$</p>
 <table>
 <thead>
