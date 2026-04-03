@@ -490,7 +490,20 @@ Used when region is defined by a uniform **interior color** (e.g., paint bucket 
 
 ---
 
+
 #### 3. Scanline Fill (Optimized Polygon Fill)
+
+<p align="center">
+  <img src="fig3-19_scanline_polygon.png" alt="Scan-converting a polygonal region" width="500"/>
+</p>
+<div align="center"><b>Fig. 3-19</b> Scan-converting a polygonal region.</div>
+
+<p align="center">
+  <img src="table3-1_edge_list.png" alt="Edge list for scanline fill" width="500"/>
+</p>
+<div align="center"><b>Table 3-1</b> An edge list for scanline fill.</div>
+
+The above figure (Fig. 3-19) illustrates the scanline fill process for a polygonal region. The scanlines sweep from the bottom (first scan line) to the top (last scan line), intersecting polygon edges to determine fill regions. The edge list (Table 3-1) shows how each edge is represented by its $y_{min}$, $y_{max}$ (with the $y_{max}-1$ rule applied at monotonic vertices), the $x$ coordinate at $y_{min}$, and the inverse slope $1/m$. These structures are fundamental for efficient scanline polygon filling, as described below.
 
 Fills row-by-row using the polygon's geometric edge data. Eliminates recursion.
 
@@ -499,9 +512,14 @@ Fills row-by-row using the polygon's geometric edge data. Eliminates recursion.
 | Concept | Explanation |
 |---|---|
 | **Sweeping Scanline** | Process one horizontal line at a time, bottom to top |
+| **Vertex Problem** | Fix: shorten lower edge by 1 ($y_{max} - 1$) at monotonic vertices |
+| **Horizontal Rule** | Ignore horizontal edges |
+| **Edge Activation Rule** | Edge is active from $y_{min}$ up to (but not including) $y_{max}$; it is deactivated/removed after the scanline at $y_{max}$ is processed. |
 | **Odd-Even Rule** | Fill pixels between paired intersection points |
 | **Edge Coherence** | $x_{new} = x_{old} + \frac{1}{m}$ — no recalculation per row |
-| **Vertex Problem** | Fix: shorten lower edge by 1 ($y_{max} - 1$) at monotonic vertices |
+
+
+
 
 **Algorithm Steps:**
 1. **Build Edge Table (ET):** For each non-horizontal edge compute $y_{min}, y_{max}, x, \frac{1}{m}$; apply $y_{max}-1$ rule; sort by $y_{min}$
