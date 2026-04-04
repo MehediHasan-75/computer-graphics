@@ -1031,6 +1031,7 @@ In perspective projection, all projectors **converge at a single point** — the
 A perspective transformation is fully defined by two things:
 1. The **COP** — where the rays start from
 2. The **View Plane** — defined by a reference point R₀ and a normal vector N
+![Perspective Projection example](public/images/perspective_projection_example.png)
 
 ---
 
@@ -1100,7 +1101,7 @@ n₁x′ + n₂y′ + n₃z′ = D
 - View plane defined by normal N = (n₁, n₂, n₃) and reference point R₀(x₀, y₀, z₀)
 - Object point: P(x, y, z)
 - Find: projected point P′(x′, y′, z′)
-
+![](public/images/perspective_trasforamation_cop_origin.png)
 **Step 1 — Ray from COP through P:**
 
 Since the COP is the origin and the ray passes through P, any point on this ray is a scalar multiple of P:
