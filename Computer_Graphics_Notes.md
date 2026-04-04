@@ -1192,6 +1192,7 @@ Apply to (x, y, z, 1) → result is (dx, dy, 0, z). Divide by z → x′ = dx/z,
 
 ### 4.4 Standard Perspective — COP at C(0, 0, −d), View Plane = xy-plane
 
+![](public/images/view_point_xy.png)
 Here the view plane is z = 0 (the xy-plane) and the COP is at C(0, 0, −d).
 
 **Step 1 — Ray from C(0, 0, −d) through P(x, y, z):**
