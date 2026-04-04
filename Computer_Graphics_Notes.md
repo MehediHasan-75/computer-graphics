@@ -1069,7 +1069,21 @@ Because x′ and y′ involve dividing by z, this is a **non-linear** transforma
 
 Using homogeneous coordinates, the perspective transformation becomes:
 
-$$\begin{pmatrix} x' \\ y' \\ z' \\ 1 \end{pmatrix} = \begin{pmatrix} d \cdot x \\ d \cdot y \\ 0 \\ z + d \end{pmatrix} = \begin{pmatrix} d & 0 & 0 & 0 \\ 0 & d & 0 & 0 \\ 0 & 0 & 0 & 0 \\ 0 & 0 & 1 & d \end{pmatrix} \begin{pmatrix} x \\ y \\ z \\ 1 \end{pmatrix}$$
+```
+| x' |   | d  0  0  0 |   | x |
+| y' | = | 0  d  0  0 | * | y |
+| z' |   | 0  0  0  0 |   | z |
+|  1 |   | 0  0  1  d |   | 1 |
+```
+
+Or, as a plain text equation:
+
+  [ x' ]   [ d  0  0  0 ]   [ x ]
+  [ y' ] = [ 0  d  0  0 ] * [ y ]
+  [ z' ]   [ 0  0  0  0 ]   [ z ]
+  [  1 ]   [ 0  0  1  d ]   [ 1 ]
+
+The actual $(x', y')$ are obtained by dividing the first two components by the homogeneous weight $(z + d)$.
 
 The actual (x′, y′) are obtained by dividing the first two components by the homogeneous weight (z + d).
 
