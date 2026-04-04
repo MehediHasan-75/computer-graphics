@@ -991,6 +991,15 @@ Four components are always needed:
 
 ## 3. Taxonomy of Projection
 
+**Perspective Projection:**
+
+* A method of projecting 3D points onto a plane **so that projection lines converge at a point (the eye/COP)**, making distant objects appear smaller.
+
+**Parallel Projection:**
+
+* A method of projecting 3D points onto a plane **using parallel lines**, so object sizes remain unchanged regardless of distance.
+
+---
 ```
 Projections
 ├── Perspective  (converging projectors — COP at finite distance)
