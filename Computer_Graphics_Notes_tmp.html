@@ -411,7 +411,6 @@ code {
 <li><strong>Image Processing</strong> — pixel-based operations on existing images (not synthesizing from scratch)</li>
 <li><strong>Computer-Human Interaction</strong> — interfaces and logical input devices</li>
 </ul>
-<hr>
 <h2 id="chapter-2-image-representation">Chapter 2: Image Representation</h2>
 <h3 id="digital-image-basics">Digital Image Basics</h3>
 <table>
@@ -1834,7 +1833,7 @@ Given triangle vertices $A(3,4)$, $B(2,2)$, $C(4,2)$:</p>
 <li><strong>Geometric Distortion:</strong> Occurs if the aspect ratio (width-to-height ratio) of the window does not match the aspect ratio of the viewport, causing objects to stretch or compress.</li>
 </ul>
 <p><strong>5.2 &amp; 5.3 Point and Line Clipping</strong><br>
-Clipping is the process of eliminating objects or portions of objects that lie outside the viewing window.</p>
+Clipping is the computational process of removing the parts of an object that lie outside a specified boundary, known as the clipping window. Only the visible parts inside the window are kept and rendered.</p>
 <ul>
 <li><strong>Point Clipping:</strong> Simply evaluates if a point's coordinates satisfy $x_{min} \le x \le x_{max}$ and $y_{min} \le y \le y_{max}$.</li>
 <li><strong>Cohen-Sutherland Line Clipping:</strong>
@@ -1911,55 +1910,621 @@ This perspective assumes the object remains perfectly stationary while the obser
 <li>To place multiple copies (instances) of this chair into a master &quot;scene coordinate space,&quot; an <strong>instance transformation</strong> is applied. This is a specific composite transformation matrix that scales, rotates, and translates the generic chair into its specific final position, size, and orientation within the room.</li>
 </ul>
 <p>Here is an exam-oriented summary of Chapter 7, which introduces the mathematics and fundamental concepts of projecting 3D objects onto a 2D display surface.</p>
-<h3 id="chapter-7-mathematics-of-projection">Chapter 7: Mathematics of Projection</h3>
-<p><strong>Introduction to Projection</strong></p>
+<h1 id="chapter-7-mathematics-of-projection">Chapter 7: Mathematics of Projection</h1>
+<h2 id="1-what-is-projection">1. What is Projection?</h2>
+<p>Projection is the process of <strong>mapping a 3D point P(x, y, z) onto a 2D image point P′(x′, y′, z′)</strong> on a flat surface called the <strong>projection plane</strong> (or <strong>view plane</strong>).</p>
+<p>It acts as a bridge between the 3D world and the 2D display on a screen or paper.</p>
+<p>The mapping is done through a line called a <strong>projector</strong> — it passes through the 3D object point and intersects the view plane. The intersection point is the projected image P′.</p>
+<blockquote>
+<p><strong>Key Observation:</strong> Projection preserves lines. The image of a line segment is itself a line segment (or a point), never a curve.</p>
+</blockquote>
+<hr>
+<h2 id="2-key-elements-of-projection">2. Key Elements of Projection</h2>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/projection_example.png" alt="Projection example"><br>
+Four components are always needed:</p>
+<table>
+<thead>
+<tr>
+<th>Component</th>
+<th>Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Observer / COP</strong></td>
+<td>The viewpoint or Center of Projection where projection rays originate</td>
+</tr>
+<tr>
+<td><strong>Object</strong></td>
+<td>The 3D entity being projected</td>
+</tr>
+<tr>
+<td><strong>Projection Plane (View Plane)</strong></td>
+<td>The 2D surface where the final image forms</td>
+</tr>
+<tr>
+<td><strong>Projectors</strong></td>
+<td>The rays/lines that travel from the object toward the projection plane</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="3-taxonomy-of-projection">3. Taxonomy of Projection</h2>
+<p><strong>Perspective Projection:</strong></p>
 <ul>
-<li><strong>Definition:</strong> Projection is the process of mapping a 3D point $P(x,y,z)$ onto its 2D image $P'(x',y',z')$ in a projection plane (or view plane)[cite: 12].</li>
-<li><strong>Projector:</strong> The mapping is determined by a projection line, called a projector, that passes through the 3D object point and intersects the view plane[cite: 12].</li>
-<li><strong>Fundamental Divisions:</strong> There are two basic methods of projection: <strong>Perspective</strong> (which shows an object realistically as it appears to the eye) and <strong>Parallel</strong> (which preserves the object's true size and shape)[cite: 12].</li>
+<li>A method of projecting 3D points onto a plane <strong>so that projection lines converge at a point (the eye/COP)</strong>, making distant objects appear smaller.</li>
 </ul>
-<p><strong>7.1 &amp; 7.2 Perspective Projection</strong><br>
-In perspective projection, all projectors converge at a single point called the <strong>center of projection</strong> (similar to the eye of an observer or a camera lens)[cite: 12].</p>
+<p><strong>Parallel Projection:</strong></p>
 <ul>
-<li><strong>Characteristics:</strong>
-<ul>
-<li><strong>Perspective Foreshortening:</strong> Objects appear smaller as their distance from the center of projection increases[cite: 12].</li>
-<li><strong>Vanishing Points:</strong> Parallel lines that are not parallel to the view plane appear to converge and meet at a &quot;vanishing point&quot;[cite: 12].</li>
-<li><strong>Principal Vanishing Points:</strong> Formed by the apparent intersection of lines parallel to the principal $x$, $y$, or $z$ axes[cite: 12]. Projections are classified as <em>One-point</em>, <em>Two-point</em>, or <em>Three-point</em> perspective depending on how many principal axes the view plane intersects[cite: 12].</li>
+<li>A method of projecting 3D points onto a plane <strong>using parallel lines</strong>, so object sizes remain unchanged regardless of distance.</li>
 </ul>
-</li>
-<li><strong>Mathematical Description:</strong> Because perspective transformation is non-linear (it involves dividing by the $z$-depth), it cannot be represented by a standard $3 \times 3$ matrix. Instead, it requires a <strong>$4 \times 4$ homogeneous coordinate matrix</strong> to calculate the transformation[cite: 12].</li>
-<li><strong>Perspective Anomalies:</strong> While enhancing realism, this projection causes distortions:
+<hr>
+<pre class="hljs"><code><div>Projections
+├── Perspective  (converging projectors — COP at finite distance)
+│   ├── One-point perspective    (1 principal vanishing point)
+│   ├── Two-point perspective    (2 principal vanishing points)
+│   └── Three-point perspective  (3 principal vanishing points)
+│
+└── Parallel  (parallel projectors — COP at infinity)
+    ├── Orthographic  (projectors perpendicular to view plane)
+    │   ├── Multiview    (view plane parallel to principal planes)
+    │   └── Axonometric  (view plane NOT parallel to principal planes)
+    │       ├── Isometric   (equal angles with all 3 axes)
+    │       ├── Dimetric    (equal angles with exactly 2 axes)
+    │       └── Trimetric   (unequal angles with all 3 axes)
+    │
+    └── Oblique  (projectors NOT perpendicular to view plane)
+        ├── Cavalier  (lines perpendicular to view plane at full length)
+        └── Cabinet   (lines perpendicular to view plane at half length)
+</div></code></pre>
+<p><strong>Core difference:</strong></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Perspective</th>
+<th>Parallel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COP location</td>
+<td>Finite point</td>
+<td>At infinity</td>
+</tr>
+<tr>
+<td>Projectors</td>
+<td>Converge at COP</td>
+<td>All parallel</td>
+</tr>
+<tr>
+<td>Realism</td>
+<td>High (mimics the eye/camera)</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Preserves measurements</td>
+<td>No</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Parallel lines stay parallel?</td>
+<td>No — converge at vanishing points</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Used for</td>
+<td>Artistic/realistic rendering</td>
+<td>Engineering/architectural drawings</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="4-perspective-projection">4. Perspective Projection</h2>
+<p>In perspective projection, all projectors <strong>converge at a single point</strong> — the <strong>Center of Projection (COP)</strong>, analogous to the eye or camera lens.</p>
+<p>A perspective transformation is fully defined by two things:</p>
 <ol>
-<li><em>Foreshortening:</em> Size diminishes with distance[cite: 12].</li>
-<li><em>Vanishing Points:</em> Parallel lines appear to intersect[cite: 12].</li>
-<li><em>View Confusion:</em> Objects behind the center of projection can incorrectly be projected upside down and backward[cite: 12].</li>
-<li><em>Topological Distortion:</em> A finite line crossing the plane parallel to the view plane (at the center of projection) projects to infinity, tearing the line into two disconnected infinite segments[cite: 12].</li>
+<li>The <strong>COP</strong> — where the rays start from</li>
+<li>The <strong>View Plane</strong> — defined by a reference point R₀ and a normal vector N<br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/perspective_projection_example.png" alt="Perspective Projection example"></li>
 </ol>
-</li>
-</ul>
-<p><strong>7.3 Parallel Projection</strong><br>
-In parallel projection, the projectors are all strictly parallel to each other, sharing a fixed <strong>direction of projection</strong>[cite: 12]. This method is heavily used in engineering and drafting because it preserves true dimensions and shapes[cite: 12].</p>
+<hr>
+<h3 id="41-reference-point-r%E2%82%80-and-normal-vector-n">4.1 Reference Point R₀ and Normal Vector N</h3>
+<p><strong>What is the Reference Point R₀?</strong></p>
+<p>R₀ is a known point that lies on the view plane. It acts as the <strong>base location</strong> from which the plane's position in 3D space is defined.</p>
 <ul>
-<li><strong>Orthographic Projection:</strong> The direction of projection is exactly <strong>perpendicular</strong> to the view plane[cite: 12].
+<li>Think of it as: <strong>the origin of the viewing coordinate system</strong> — the anchor point of the camera/view setup.</li>
+<li>Every projected point P′ is calculated relative to this reference.</li>
+<li>It is used to write the plane equation: any point P′ is on the plane if the vector (P′ − R₀) is perpendicular to N.</li>
+</ul>
+<p><strong>What is the Normal Vector N?</strong></p>
+<p>The normal vector N = (n₁, n₂, n₃) is a vector that is <strong>perpendicular (at 90°) to the plane</strong>.</p>
+<pre class="hljs"><code><div>        ^ N  (normal vector — sticks straight out of the plane)
+        |
+  ------+------
+ /             \
+/   VIEW PLANE  \
+</div></code></pre>
+<p>Why the normal matters:</p>
 <ul>
-<li><em>Multiview:</em> The view plane is parallel to the principal planes (e.g., standard front, top, and side architectural views)[cite: 12].</li>
-<li><em>Axonometric:</em> The view plane is not parallel to the principal planes[cite: 12].
+<li>It defines the <strong>orientation (tilt)</strong> of the view plane in 3D space.</li>
+<li>Without N, we cannot tell if the plane faces left, right, up, or diagonally.</li>
+<li>Combined with R₀, it fully describes the plane mathematically.</li>
+</ul>
+<p><strong>Plane Equation from R₀ and N:</strong></p>
+<p>A point P′(x′, y′, z′) lies on the plane if and only if:</p>
+<pre class="hljs"><code><div>N · (P′ − R₀) = 0
+</div></code></pre>
+<p>Expanding:</p>
+<pre class="hljs"><code><div>n₁(x′ − x₀) + n₂(y′ − y₀) + n₃(z′ − z₀) = 0
+n₁x′ + n₂y′ + n₃z′ = n₁x₀ + n₂y₀ + n₃z₀
+</div></code></pre>
+<p>Define the constant:</p>
+<pre class="hljs"><code><div>D = n₁x₀ + n₂y₀ + n₃z₀
+</div></code></pre>
+<p>So the plane equation becomes:</p>
+<pre class="hljs"><code><div>n₁x′ + n₂y′ + n₃z′ = D
+</div></code></pre>
+<blockquote>
+<p>Left side depends on any candidate point P′. Right side D is a fixed constant for the plane.<br>
+Any point P′ lies on the plane if and only if it satisfies this equation.</p>
+</blockquote>
+<hr>
+<h3 id="42-general-perspective--cop-at-origin-arbitrary-plane">4.2 General Perspective — COP at Origin, Arbitrary Plane</h3>
+<p><strong>Setup:</strong></p>
 <ul>
-<li><strong>Isometric:</strong> The projection makes equal angles with all three principal axes[cite: 12].</li>
-<li><strong>Dimetric:</strong> Makes equal angles with exactly two principal axes[cite: 12].</li>
-<li><strong>Trimetric:</strong> Makes unequal angles with all three axes[cite: 12].</li>
+<li>COP at origin (0, 0, 0)</li>
+<li>View plane defined by normal N = (n₁, n₂, n₃) and reference point R₀(x₀, y₀, z₀)</li>
+<li>Object point: P(x, y, z)</li>
+<li>Find: projected point P′(x′, y′, z′)<br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/perspective_trasforamation_cop_origin.png" alt=""></li>
 </ul>
-</li>
-</ul>
-</li>
-<li><strong>Oblique Projection:</strong> The direction of projection is <strong>not perpendicular</strong> to the view plane[cite: 12].
+<p><strong>Step 1 — Ray from COP through P:</strong></p>
+<p>Since the COP is the origin and the ray passes through P, any point on this ray is a scalar multiple of P:</p>
+<pre class="hljs"><code><div>P′ = α · P   →   x′ = αx,   y′ = αy,   z′ = αz
+</div></code></pre>
+<p>(α is an unknown scalar to be determined.)</p>
+<p><strong>Step 2 — P′ must lie on the plane:</strong><br>
+So, it it shoudl satisfy the plane equation n₁x′ + n₂y′ + n₃z′ = D</p>
+<pre class="hljs"><code><div>n₁(αx) + n₂(αy) + n₃(αz) = D
+α(n₁x + n₂y + n₃z) = D
+α = D / (n₁x + n₂y + n₃z)
+</div></code></pre>
+<p><strong>Step 3 — Substitute α back to get projection formulas:</strong></p>
+<pre class="hljs"><code><div>x′ = Dx / (n₁x + n₂y + n₃z)
+y′ = Dy / (n₁x + n₂y + n₃z)
+z′ = Dz / (n₁x + n₂y + n₃z)
+</div></code></pre>
+<p>where <code>D = n₁x₀ + n₂y₀ + n₃z₀</code>.</p>
+<p><strong>Step 4 — Matrix form using homogeneous coordinates:</strong></p>
+<pre class="hljs"><code><div>| D   0   0   0 |   | x |   | Dx                    |
+| 0   D   0   0 | × | y | = | Dy                    |
+| 0   0   D   0 |   | z |   | Dz                    |
+| n₁  n₂  n₃  0 |   | 1 |   | n₁x + n₂y + n₃z      |
+</div></code></pre>
+<p>Divide each of the first three results by the last (perspective divide) to recover x′, y′, z′.</p>
+<hr>
+<h3 id="43-standard-perspective--cop-at-origin-view-plane-z--d">4.3 Standard Perspective — COP at Origin, View Plane z = d</h3>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/perspective_trasforamation_cop_origin_view_x_d.png" alt=""></p>
+<p>This is a <strong>special case</strong> of Section 4.2 where the plane is z = d.</p>
 <ul>
-<li><strong>Cavalier:</strong> The projection angle is chosen (typically $45^\circ$) so that lines perpendicular to the projection plane are <em>not foreshortened</em> at all (scale is 1:1)[cite: 12].</li>
-<li><strong>Cabinet:</strong> The projection angle is chosen (typically $30^\circ$ or $63.4^\circ$) so that lines perpendicular to the projection plane are foreshortened by exactly <strong>half</strong> their length, which often looks more natural than Cavalier[cite: 12].</li>
+<li>Normal: N = (0, 0, 1)</li>
+<li>Reference point: R₀ = (0, 0, d)</li>
 </ul>
-</li>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/z_d_plane.jpeg" alt=""></p>
+<p><strong>Compute D:</strong></p>
+<pre class="hljs"><code><div>D = (0)(0) + (0)(0) + (1)(d) = d
+</div></code></pre>
+<p><strong>Substitute into general formulas:</strong></p>
+<pre class="hljs"><code><div>x′ = dx / (0·x + 0·y + 1·z) = dx/z
+y′ = dy/z
+z′ = d
+</div></code></pre>
+<p><strong>Result:</strong></p>
+<pre class="hljs"><code><div>x′ = dx/z,   y′ = dy/z,   z′ = d
+</div></code></pre>
+<p><strong>Matrix (homogeneous):</strong></p>
+<pre class="hljs"><code><div>| d   0   0   0 |
+| 0   d   0   0 |
+| 0   0   0   0 |
+| 0   0   1   0 |
+</div></code></pre>
+<p>Apply to (x, y, z, 1) → result is (dx, dy, 0, z). Divide by z → x′ = dx/z, y′ = dy/z.</p>
+<hr>
+<h3 id="44-standard-perspective--cop-at-c0-0-%E2%88%92d-view-plane--xy-plane">4.4 Standard Perspective — COP at C(0, 0, −d), View Plane = xy-plane</h3>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/view_point_xy.png" alt=""><br>
+Here the view plane is z = 0 (the xy-plane) and the COP is at C(0, 0, −d).</p>
+<p><strong>Step 1 — Ray from C(0, 0, −d) through P(x, y, z):</strong></p>
+<pre class="hljs"><code><div>Point on ray = C + t(P − C) = (tx,  ty,  −d + t(z+d))
+</div></code></pre>
+<p><strong>Step 2 — Find t when z-coordinate = 0 (hits the xy-plane):</strong></p>
+<pre class="hljs"><code><div>−d + t(z + d) = 0   →   t = d / (z + d)
+</div></code></pre>
+<p><strong>Step 3 — Projected coordinates:</strong></p>
+<pre class="hljs"><code><div>x′ = tx = dx / (z + d)
+y′ = ty = dy / (z + d)
+z′ = 0
+</div></code></pre>
+<p><strong>Result:</strong></p>
+<pre class="hljs"><code><div>x′ = dx/(z+d),   y′ = dy/(z+d),   z′ = 0
+</div></code></pre>
+<hr>
+<h3 id="45-why-a-3%C3%973-matrix-cannot-work--homogeneous-coordinates">4.5 Why a 3×3 Matrix Cannot Work — Homogeneous Coordinates</h3>
+<p><strong>The problem:</strong></p>
+<p>From the general perspective result:</p>
+<pre class="hljs"><code><div>x′ = Dx / (n₁x + n₂y + n₃z)
+</div></code></pre>
+<p>The denominator <code>(n₁x + n₂y + n₃z)</code> contains the input variables x, y, z — we are <strong>dividing by a function of the input</strong>. That is a <strong>non-linear</strong> operation.</p>
+<p>A 3×3 matrix can only represent <strong>linear transformations</strong> (rotation, scaling, shearing). It cannot handle this division. So perspective projection cannot be expressed as a 3×3 matrix multiplication.</p>
+<table>
+<thead>
+<tr>
+<th>Without homogeneous coords</th>
+<th>With homogeneous coords</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Non-linear — no matrix possible</td>
+<td>Linear 4×4 matrix + one final division</td>
+</tr>
+<tr>
+<td>Cannot combine with other transforms</td>
+<td>Transforms chain by matrix multiplication</td>
+</tr>
+<tr>
+<td>Not GPU-friendly</td>
+<td>Standard in graphics hardware pipelines</td>
+</tr>
+</tbody>
+</table>
+<p><strong>The fix — Homogeneous Coordinates:</strong></p>
+<p>Extend (x, y, z) to (x, y, z, 1) by adding an extra coordinate.</p>
+<p>The 4×4 matrix encodes the numerators in the top rows and the denominator expression in the bottom row:</p>
+<pre class="hljs"><code><div>| D   0   0   0 |
+| 0   D   0   0 |
+| 0   0   D   0 |
+| n₁  n₂  n₃  0 |
+</div></code></pre>
+<p>After multiplying by (x, y, z, 1), the result is (Dx, Dy, Dz, n₁x+n₂y+n₃z).</p>
+<p><strong>Perspective divide:</strong> divide by the last component to get x′, y′, z′.</p>
+<blockquote>
+<p>The division happens <em>after</em> the matrix multiplication — not inside it. This is the key trick that makes a non-linear operation GPU-compatible.</p>
+</blockquote>
+<hr>
+<h3 id="46-perspective-anomalies">4.6 Perspective Anomalies</h3>
+<p>The perspective process introduces <strong>four distinct visual anomalies</strong>:</p>
+<p><strong>1. Perspective Foreshortening</strong><br>
+The farther an object is from the center of projection, the smaller it<br>
+appears (i.e. its projected size becomes smaller)</p>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/perspective_forecasting.png" alt=""></p>
+<p><strong>2. Vanishing Points</strong><br>
+Sets of parallel 3D lines that are <strong>not parallel to the view plane</strong> appear to converge at a single point on the view plane called a vanishing point.</p>
+<ul>
+<li>Imagine a flat window (the <strong>view plane</strong>) in front of you.</li>
+<li><strong>Lines that are parallel to the window</strong> (the view plane) stay parallel when you look at them—they <strong>don’t converge</strong>.</li>
+<li><strong>Lines that are slanted away from the window</strong> (not parallel to it) <strong>appear to come together</strong> at some point in the distance—that point is the <strong>vanishing point</strong>.</li>
 </ul>
+<p>Example: Railway tracks appear to meet at the horizon because they are not parallel to your eyes’ view plane—they go away from you into depth.?</p>
+<ul>
+<li><strong>Principal vanishing points</strong> are formed by lines parallel to the x, y, or z axes.</li>
+<li>The number of principal vanishing points equals the number of principal axes the view plane intersects (gives 1-point, 2-point, or 3-point perspective).</li>
+</ul>
+<p><strong>3. View Confusion</strong><br>
+Points <strong>behind the COP</strong> get projected upside-down and backward onto the view plane.(like mirror) This is why 3D clipping must happen <em>before</em> applying the perspective transformation.</p>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/vanising_point_view_confusion.png" alt=""></p>
+<p><strong>4. Topological Distortion</strong><br>
+The plane passing through the COP and parallel to the view plane is a singularity. Any point on it projects to infinity. A finite line segment crossing this plane is torn into two disconnected, infinitely long halves.</p>
+<ul>
+<li>Think of this like trying to take a photo of something right at the lens—it’s too close to the eye, so it “blows up” in the image.</li>
+</ul>
+<p><img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/tropological_distortion.png" alt=""></p>
+<hr>
+<h2 id="5-parallel-projection">5. Parallel Projection</h2>
+<p>In <strong>parallel projection</strong>, all projectors (lines along which points are projected) are <strong>parallel to each other</strong>, unlike perspective projection where they converge at a Center of Projection (COP). Conceptually, the COP is at infinity.</p>
+<ul>
+<li><strong>Direction of projection</strong>: A fixed vector <strong>V = (a, b, c)</strong> governs the direction along which all points are projected.</li>
+<li><strong>Key property</strong>: Preserves <strong>true dimensions, shapes, and parallel relationships</strong>, making it widely used in engineering and technical drawings.<br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/parallel_projection.png" alt=""></li>
+</ul>
+<hr>
+<h3 id="51-reference-plane-and-projection-vector">5.1 Reference Plane and Projection Vector</h3>
+<ul>
+<li><strong>Reference Plane</strong>: Defined by a known plane equation (like z = 0 for xy-plane).</li>
+<li><strong>Projection vector</strong>: <strong>V = (a, b, c)</strong> specifies the direction of projection.</li>
+</ul>
+<p>Think of it as “pushing” each point along the same vector until it hits the view plane.</p>
+<hr>
+<h3 id="52-general-parallel-projection-onto-xy-plane">5.2 General Parallel Projection onto xy-Plane</h3>
+<p><strong>Goal</strong>: Project a point <strong>P(x, y, z)</strong> onto the <strong>xy-plane</strong> (z = 0) along direction <strong>V = (a, b, c)</strong>.<br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/parlallel_porjction_xy.png" alt=""><br>
+<strong>Step 1 — Parametric form of the line</strong></p>
+<p>The line passing through <strong>P</strong> in direction <strong>V</strong>:</p>
+<p>(x', y', z') = (x + a t, y + b t, z + c t)</p>
+<p>where <strong>t</strong> is a scalar parameter.</p>
+<p><strong>Step 2 — Apply plane condition</strong></p>
+<p>The projected point lies on the plane <strong>z′ = 0</strong>:</p>
+<p>0 = z + c t   ⇒   t = -z/c</p>
+<p><strong>Step 3 — Solve for projected coordinates</strong></p>
+<pre class="hljs"><code><div>x' = x + a t = x - (a/c) z
+y' = y + b t = y - (b/c) z
+z' = 0
+</div></code></pre>
+<p><strong>Result</strong>:</p>
+<pre class="hljs"><code><div>x' = x - (a/c) z,   y' = y - (b/c) z,   z' = 0
+</div></code></pre>
+<p><strong>Matrix form (3×3)</strong>:</p>
+<pre class="hljs"><code><div>| 1   0   -a/c |   | x |   = | x - (a/c)z |
+| 0   1   -b/c | * | y |   = | y - (b/c)z |
+| 0   0    0   |   | z |   = |     0      |
+</div></code></pre>
+<blockquote>
+<p>Linear transformation — no perspective divide is needed. This makes parallel projection simpler than perspective projection computationally.</p>
+</blockquote>
+<hr>
+<h3 id="53-orthographic-projection-special-case">5.3 Orthographic Projection (Special Case)</h3>
+<p>A special case of parallel projection:</p>
+<ul>
+<li><strong>Projection vector</strong>: <strong>V = (0, 0, 1)</strong> (perpendicular to xy-plane).</li>
+<li>Substituting into the general formula:</li>
+</ul>
+<pre class="hljs"><code><div>x' = x,   y' = y,   z' = 0
+</div></code></pre>
+<p>![](public/images/Orthographic projection.png)<br>
+<strong>Matrix form (4×4 homogeneous coordinates)</strong>:</p>
+<pre class="hljs"><code><div>| 1   0   0   0 |
+| 0   1   0   0 |
+| 0   0   0   0 |
+| 0   0   0   1 |
+</div></code></pre>
+<blockquote>
+<p>Simply drops the z-coordinate. The simplest projection, widely used in CAD drawings.</p>
+</blockquote>
+<hr>
+<h3 id="53-oblique-projection">5.3 Oblique Projection</h3>
+<p>Oblique projection is a parallel projection where V is <strong>not perpendicular</strong> to the view plane (not parallel to the normal N).</p>
+<p>The derivation is identical to Section 5.1. The distinction is:</p>
+<ul>
+<li>V is parallel to N → <strong>Orthographic</strong></li>
+<li>V is not parallel to N → <strong>Oblique</strong></li>
+</ul>
+<p>Two standard oblique subtypes (view plane = xy-plane):</p>
+<table>
+<thead>
+<tr>
+<th>Type</th>
+<th>Lines perpendicular to view plane</th>
+<th>Effective angle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Cavalier</strong></td>
+<td>Drawn at <strong>full (1:1) length</strong> — no foreshortening</td>
+<td>~45°</td>
+</tr>
+<tr>
+<td><strong>Cabinet</strong></td>
+<td>Drawn at <strong>half (1:2) length</strong> — foreshortened 50%</td>
+<td>~63.4° (arctan 2)</td>
+</tr>
+</tbody>
+</table>
+<p>Cabinet looks more natural because the human eye perceives full-length receding lines as unrealistically long.<br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/oblique_on_xy.png" alt=""></p>
+<hr>
+<h2 id="6-named-projection-types--quick-definitions">6. Named Projection Types — Quick Definitions</h2>
+<table>
+<thead>
+<tr>
+<th>Name</th>
+<th>Family</th>
+<th>Key Characteristic</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Isometric</strong></td>
+<td>Axonometric Orthographic</td>
+<td>Equal angles with all 3 principal axes. All 3 axes foreshortened equally (~0.816). Projected angles between axes = 120°.</td>
+</tr>
+<tr>
+<td><strong>Dimetric</strong></td>
+<td>Axonometric Orthographic</td>
+<td>Equal angles with exactly 2 of the 3 axes. Those 2 share one foreshortening ratio; the third is different.</td>
+</tr>
+<tr>
+<td><strong>Trimetric</strong></td>
+<td>Axonometric Orthographic</td>
+<td>Unequal angles with all 3 axes. All three foreshortening ratios are different.</td>
+</tr>
+<tr>
+<td><strong>Cavalier</strong></td>
+<td>Oblique Parallel</td>
+<td>Lines perpendicular to xy-plane drawn at full length. No foreshortening.</td>
+</tr>
+<tr>
+<td><strong>Cabinet</strong></td>
+<td>Oblique Parallel</td>
+<td>Lines perpendicular to xy-plane drawn at half their actual length.</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h2 id="7-exam-question-bank-with-full-answers">7. Exam Question Bank with Full Answers</h2>
+<hr>
+<h3 id="q1-define-view-plane-and-center-of-projection-for-standard-perspective-projection">Q1. Define view plane and center of projection for standard perspective projection.</h3>
+<p><em>(Dec 2018, Q1.d)</em></p>
+<p><strong>View Plane:</strong> The 2D surface onto which the 3D scene is projected to form the image.</p>
+<p><strong>Center of Projection (COP):</strong> The fixed 3D point from which all projection rays originate — like the position of the eye or camera. In the standard setup, the COP is at the origin (0, 0, 0) and the view plane is z = d.</p>
+<hr>
+<h3 id="q2-what-are-the-main-differences-between-perspective-and-parallel-projection">Q2. What are the main differences between perspective and parallel projection?</h3>
+<p><em>(Dec 2018, Q6.b.i)</em></p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th>Perspective</th>
+<th>Parallel</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>COP location</td>
+<td>Finite point</td>
+<td>At infinity</td>
+</tr>
+<tr>
+<td>Projectors</td>
+<td>Converge at COP</td>
+<td>All parallel</td>
+</tr>
+<tr>
+<td>Realism</td>
+<td>High</td>
+<td>Low</td>
+</tr>
+<tr>
+<td>Foreshortening</td>
+<td>Yes</td>
+<td>No</td>
+</tr>
+<tr>
+<td>Parallel lines</td>
+<td>Converge at vanishing points</td>
+<td>Stay parallel</td>
+</tr>
+<tr>
+<td>Use case</td>
+<td>Rendering/animation</td>
+<td>Engineering/architectural drawings</td>
+</tr>
+</tbody>
+</table>
+<hr>
+<h3 id="q3-while-dealing-with-perspective-projection-which-components-must-always-be-given-why">Q3. While dealing with perspective projection, which components must always be given? Why?</h3>
+<p><em>(Dec 2019, Q1.f)</em></p>
+<p>You must always have:</p>
+<ol>
+<li>The <strong>Center of Projection (COP)</strong> — where projection rays originate.</li>
+<li>The <strong>View Plane</strong> — defined by either its equation (e.g., z = d) or a reference point R₀ and a normal vector N.</li>
+</ol>
+<p><strong>Why:</strong> Perspective projection finds P′ as the intersection of (a) a ray from the COP through P, and (b) the view plane. Without knowing where the ray starts (COP) and what surface it hits (view plane), the intersection cannot be computed.</p>
+<hr>
+<h3 id="q4-using-the-origin-as-the-cop-derive-the-perspective-transformation-onto-the-plane-through-r%E2%82%80x%E2%82%80-y%E2%82%80-z%E2%82%80-with-normal-n--n%E2%82%81i--n%E2%82%82j--n%E2%82%83k">Q4. Using the origin as the COP, derive the perspective transformation onto the plane through R₀(x₀, y₀, z₀) with normal N = n₁i + n₂j + n₃k.</h3>
+<p><em>(Dec 2018, Q5.f / Dec 2019, Q6.c)</em></p>
+<p><strong>Step 1 — Plane equation:</strong></p>
+<pre class="hljs"><code><div>N · (P′ − R₀) = 0   →   n₁x′ + n₂y′ + n₃z′ = D
+where D = n₁x₀ + n₂y₀ + n₃z₀
+</div></code></pre>
+<p><strong>Step 2 — Ray from origin through P:</strong></p>
+<pre class="hljs"><code><div>x′ = αx,   y′ = αy,   z′ = αz
+</div></code></pre>
+<p><strong>Step 3 — Substitute into plane equation:</strong></p>
+<pre class="hljs"><code><div>α(n₁x + n₂y + n₃z) = D   →   α = D / (n₁x + n₂y + n₃z)
+</div></code></pre>
+<p><strong>Step 4 — Final transformation:</strong></p>
+<pre class="hljs"><code><div>x′ = Dx / (n₁x + n₂y + n₃z)
+y′ = Dy / (n₁x + n₂y + n₃z)
+z′ = Dz / (n₁x + n₂y + n₃z)
+</div></code></pre>
+<p><strong>Step 5 — Why not a 3×3 matrix:</strong> The denominator contains x, y, z — division by input variables is non-linear. A 3×3 matrix only handles linear operations.</p>
+<p><strong>Step 6 — Homogeneous 4×4 matrix:</strong></p>
+<pre class="hljs"><code><div>| D   0   0   0 |
+| 0   D   0   0 |
+| 0   0   D   0 |
+| n₁  n₂  n₃  0 |
+</div></code></pre>
+<p>Multiply by (x, y, z, 1) → get (Dx, Dy, Dz, n₁x+n₂y+n₃z). Divide by last component → gives x′, y′, z′ above.</p>
+<hr>
+<h3 id="q5-find-the-perspective-projection-onto-the-view-plane-z--d-with-cop-at-origin">Q5. Find the perspective projection onto the view plane z = d with COP at origin.</h3>
+<p><em>(Dec 2018, Q4.k / Dec 2021, Q1.e)</em></p>
+<p>Special case of Q4 with N = (0, 0, 1) and R₀ = (0, 0, d).</p>
+<p>Compute D:</p>
+<pre class="hljs"><code><div>D = (0)(0) + (0)(0) + (1)(d) = d
+</div></code></pre>
+<p>Apply general formula:</p>
+<pre class="hljs"><code><div>x′ = dx / (0·x + 0·y + 1·z) = dx/z
+y′ = dy/z
+z′ = d
+</div></code></pre>
+<p>Matrix:</p>
+<pre class="hljs"><code><div>| d   0   0   0 |
+| 0   d   0   0 |
+| 0   0   0   0 |
+| 0   0   1   0 |
+</div></code></pre>
+<p>Apply to (x, y, z, 1) → (dx, dy, 0, z). Divide by z → x′ = dx/z, y′ = dy/z.</p>
+<hr>
+<h3 id="q6-under-the-standard-perspective-transformation-find-a-projected-image-of-a-point-in-z--%E2%88%92d-and-b-projected-image-of-segment-from-p%E2%82%81%E2%88%921-1-%E2%88%922d-to-p%E2%82%822-%E2%88%922-0">Q6. Under the standard perspective transformation, find: (a) projected image of a point in z = −d, and (b) projected image of segment from P₁(−1, 1, −2d) to P₂(2, −2, 0).</h3>
+<p><em>(Dec 2018, Q2.d / Q6.a)</em></p>
+<p>Using x′ = dx/z and y′ = dy/z from Q5:</p>
+<p><strong>(a) Point in the plane z = −d:</strong></p>
+<pre class="hljs"><code><div>x′ = dx/(−d) = −x,   y′ = dy/(−d) = −y
+</div></code></pre>
+<p>The point (x, y, −d) projects to <strong>(−x, −y, d)</strong> — the image is inverted. This illustrates <strong>view confusion</strong> (point is behind the COP).</p>
+<p><strong>(b) Segment from P₁(−1, 1, −2d) to P₂(2, −2, 0):</strong></p>
+<p>Project P₁ (z = −2d):</p>
+<pre class="hljs"><code><div>x′ = d(−1)/(−2d) = 1/2,   y′ = d(1)/(−2d) = −1/2
+</div></code></pre>
+<p>Projected P₁ = <strong>(1/2, −1/2, d)</strong> ✓</p>
+<p>Project P₂ (z = 0):</p>
+<pre class="hljs"><code><div>x′ = d(2)/0 = undefined (→ ∞)
+y′ = d(−2)/0 = undefined (→ ∞)
+</div></code></pre>
+<p>P₂ lies on the plane z = 0 passing through the COP — its projection goes to infinity.</p>
+<p><strong>Result:</strong> The projected image is a <strong>ray starting at (1/2, −1/2) on the view plane and extending to infinity</strong>. This illustrates <strong>topological distortion</strong>.</p>
+<hr>
+<h3 id="q7-derive-the-equations-of-parallel-projection-onto-the-xy-plane-in-direction-v--ai--bj--ck">Q7. Derive the equations of parallel projection onto the xy-plane in direction V = ai + bj + ck.</h3>
+<p><em>(Dec 2018, Q3.c.i)</em></p>
+<p>Projector through P(x, y, z) parallel to V:</p>
+<pre class="hljs"><code><div>(x′, y′, z′) = (x + at,  y + bt,  z + ct)
+</div></code></pre>
+<p>From z′ = 0:</p>
+<pre class="hljs"><code><div>0 = z + ct   →   t = −z/c
+</div></code></pre>
+<p>Substitute:</p>
+<pre class="hljs"><code><div>x′ = x − (a/c)z,   y′ = y − (b/c)z,   z′ = 0
+</div></code></pre>
+<p>Matrix form:</p>
+<pre class="hljs"><code><div>| 1   0   −a/c |   | x |   = | x − (a/c)z |
+| 0   1   −b/c | * | y |   = | y − (b/c)z |
+| 0   0    0   |   | z |   = |     0      |
+</div></code></pre>
+<hr>
+<h3 id="q8-derive-the-general-form-of-an-oblique-projection-onto-the-xy-plane">Q8. Derive the general form of an oblique projection onto the xy-plane.</h3>
+<p><em>(Dec 2019, Q4.e)</em><br>
+<img src="file:///Users/mehedihasan/Projects/computer-graphics/public/images/oblique_on_xy.png" alt=""></p>
+<p>Oblique projection is a parallel projection where V is not perpendicular to the xy-plane. Since the derivation is identical to Q7 (same direction-of-projection setup), the result is the same:</p>
+<pre class="hljs"><code><div>x′ = x − (a/c)z,   y′ = y − (b/c)z,   z′ = 0
+</div></code></pre>
+<p>The condition for oblique (not orthographic) is that at least one of (a, b) is nonzero — meaning V has a component along the plane, not just perpendicular to it.</p>
+<hr>
+<h3 id="q9-what-are-the-anomalies-of-perspective-projection">Q9. What are the anomalies of perspective projection?</h3>
+<p><em>(Dec 2019, Q2.f / Dec 2021, Q6.f)</em></p>
+<ol>
+<li><strong>Perspective foreshortening</strong> — objects appear smaller with increasing distance from the COP.</li>
+<li><strong>Vanishing points</strong> — parallel 3D lines not parallel to the view plane appear to converge on the view plane.</li>
+<li><strong>View confusion</strong> — points behind the COP project upside-down and backward onto the view plane.</li>
+<li><strong>Topological distortion</strong> — a line crossing the plane through the COP parallel to the view plane is torn into two disconnected infinite halves.</li>
+</ol>
+<hr>
+<h3 id="q10-what-is-a-vanishing-point">Q10. What is a vanishing point?</h3>
+<p><em>(Dec 2019, Q4.c)</em></p>
+<p>A vanishing point is a point on the view plane where the 2D projections of a set of mutually parallel 3D lines appear to converge. For example, parallel railway tracks appear to meet at the horizon.</p>
+<hr>
+<h3 id="q11-define-dimetric-projection">Q11. Define dimetric projection.</h3>
+<p><em>(Dec 2020 Set-01 &amp; Set-02, Q1.e)</em></p>
+<p>Dimetric projection is an axonometric (orthographic parallel) projection where the direction of projection makes <strong>equal angles with exactly two</strong> of the three principal axes. Those two axes are foreshortened by the same ratio; the third axis has a different foreshortening ratio.</p>
+<hr>
+<h3 id="q12-what-is-cabinet-projection">Q12. What is cabinet projection?</h3>
+<p><em>(Dec 2020 Set-02, Q1.e)</em></p>
+<p>Cabinet projection is an oblique parallel projection where lines perpendicular to the projection plane are drawn at <strong>half (1/2) of their actual length</strong>. The projection rays make an angle of arctan(2) ≈ 63.4° with the view plane. This gives a more natural appearance than cavalier projection.</p>
+<hr>
+<h3 id="q13-what-is-isometric-projection">Q13. What is isometric projection?</h3>
+<p><em>(Dec 2021, Q5.h)</em></p>
+<p>Isometric projection is an axonometric (orthographic parallel) projection where the direction of projection makes <strong>equal angles with all three</strong> principal axes (x, y, z). All three axes foreshorten equally by a ratio of approximately 0.816. The projected angles between the three axes are all 120°.</p>
+<hr>
 
 </body>
 

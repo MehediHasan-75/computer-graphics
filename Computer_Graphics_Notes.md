@@ -31,10 +31,8 @@ $$\text{Object Coordinates} \rightarrow \text{World Coordinates} \rightarrow \te
 - **Image Processing** — pixel-based operations on existing images (not synthesizing from scratch)
 - **Computer-Human Interaction** — interfaces and logical input devices
 
----
 
 ## Chapter 2: Image Representation
-
 ### Digital Image Basics
 
 | Term | Definition |
@@ -1314,75 +1312,78 @@ The plane passing through the COP and parallel to the view plane is a singularit
 
 ## 5. Parallel Projection
 
-In parallel projection, all projectors are **parallel to each other** — the COP is conceptually at infinity. A fixed **direction of projection vector V = (a, b, c)** governs all projectors.
+In **parallel projection**, all projectors (lines along which points are projected) are **parallel to each other**, unlike perspective projection where they converge at a Center of Projection (COP). Conceptually, the COP is at infinity.
 
-Preserves true dimensions, shapes, and parallel relationships — hence the standard in engineering drafting.
+* **Direction of projection**: A fixed vector **V = (a, b, c)** governs the direction along which all points are projected.
+* **Key property**: Preserves **true dimensions, shapes, and parallel relationships**, making it widely used in engineering and technical drawings.
 ![](public/images/parallel_projection.png)
 ---
 
-### 5.1 General Parallel Projection onto the xy-Plane
+### 5.1 Reference Plane and Projection Vector
 
-**Setup:** Project P(x, y, z) onto the xy-plane (z = 0) along direction V = (a, b, c).
+* **Reference Plane**: Defined by a known plane equation (like z = 0 for xy-plane).
+* **Projection vector**: **V = (a, b, c)** specifies the direction of projection.
 
-**Step 1 — The projector through P is parallel to V:**
-
-```
-(x′, y′, z′) = (x + at,  y + bt,  z + ct)
-```
-
-**Step 2 — Apply the plane condition z′ = 0:**
-
-```
-0 = z + ct   →   t = −z/c
-```
-
-**Step 3 — Substitute t:**
-
-```
-x′ = x + a(−z/c) = x − (a/c)z
-y′ = y + b(−z/c) = y − (b/c)z
-z′ = 0
-```
-
-**Result:**
-
-```
-x′ = x − (a/c)z
-y′ = y − (b/c)z
-z′ = 0
-```
-
-**Matrix form (3×3):**
-
-```
-| 1   0   −a/c |   | x |   | x − (a/c)z |
-| 0   1   −b/c | × | y | = | y − (b/c)z |
-| 0   0    0   |   | z |   | 0           |
-```
-
-> This is a **linear** transformation — no division by input variables — so a 3×3 matrix works perfectly here. This is why parallel projection is simpler computationally than perspective.
+Think of it as “pushing” each point along the same vector until it hits the view plane.
 
 ---
 
-### 5.2 Orthographic Projection onto xy-Plane
+### 5.2 General Parallel Projection onto xy-Plane
 
-Special case of parallel projection where V = (0, 0, 1) — the projection direction is perpendicular to the xy-plane.
+**Goal**: Project a point **P(x, y, z)** onto the **xy-plane** (z = 0) along direction **V = (a, b, c)**.
+![](public/images/parlallel_porjction_xy.png)
+**Step 1 — Parametric form of the line**
 
-Substitute a = 0, b = 0 into the general result:
+The line passing through **P** in direction **V**:
+
+  (x', y', z') = (x + a t, y + b t, z + c t)
+
+where **t** is a scalar parameter.
+
+**Step 2 — Apply plane condition**
+
+The projected point lies on the plane **z′ = 0**:
+
+  0 = z + c t   ⇒   t = -z/c
+
+**Step 3 — Solve for projected coordinates**
 
 ```
-x′ = x − (0/c)z = x
-y′ = y − (0/c)z = y
-z′ = 0
+x' = x + a t = x - (a/c) z
+y' = y + b t = y - (b/c) z
+z' = 0
 ```
 
-**Result:**
+**Result**:
 
 ```
-x′ = x,   y′ = y,   z′ = 0
+x' = x - (a/c) z,   y' = y - (b/c) z,   z' = 0
 ```
 
-**Matrix form:**
+**Matrix form (3×3)**:
+
+```
+| 1   0   -a/c |   | x |   = | x - (a/c)z |
+| 0   1   -b/c | * | y |   = | y - (b/c)z |
+| 0   0    0   |   | z |   = |     0      |
+```
+
+> Linear transformation — no perspective divide is needed. This makes parallel projection simpler than perspective projection computationally.
+
+---
+
+### 5.3 Orthographic Projection (Special Case)
+
+A special case of parallel projection:
+
+* **Projection vector**: **V = (0, 0, 1)** (perpendicular to xy-plane).
+* Substituting into the general formula:
+
+```
+x' = x,   y' = y,   z' = 0
+```
+![](public/images/Orthographic projection.png)
+**Matrix form (4×4 homogeneous coordinates)**:
 
 ```
 | 1   0   0   0 |
@@ -1391,9 +1392,10 @@ x′ = x,   y′ = y,   z′ = 0
 | 0   0   0   1 |
 ```
 
-This simply **drops the z-coordinate** — the simplest possible projection.
+> Simply drops the z-coordinate. The simplest projection, widely used in CAD drawings.
 
 ---
+
 
 ### 5.3 Oblique Projection
 
@@ -1411,6 +1413,7 @@ Two standard oblique subtypes (view plane = xy-plane):
 | **Cabinet** | Drawn at **half (1:2) length** — foreshortened 50% | ~63.4° (arctan 2) |
 
 Cabinet looks more natural because the human eye perceives full-length receding lines as unrealistically long.
+![](public/images/oblique_on_xy.png)
 
 ---
 
@@ -1601,15 +1604,16 @@ x′ = x − (a/c)z,   y′ = y − (b/c)z,   z′ = 0
 Matrix form:
 
 ```
-| 1   0   −a/c |   | x |   | x − (a/c)z |
-| 0   1   −b/c | × | y | = | y − (b/c)z |
-| 0   0    0   |   | z |   | 0           |
+| 1   0   −a/c |   | x |   = | x − (a/c)z |
+| 0   1   −b/c | * | y |   = | y − (b/c)z |
+| 0   0    0   |   | z |   = |     0      |
 ```
 
 ---
 
 ### Q8. Derive the general form of an oblique projection onto the xy-plane.
 *(Dec 2019, Q4.e)*
+![](public/images/oblique_on_xy.png)
 
 Oblique projection is a parallel projection where V is not perpendicular to the xy-plane. Since the derivation is identical to Q7 (same direction-of-projection setup), the result is the same:
 
