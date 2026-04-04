@@ -1103,6 +1103,7 @@ n₁x′ + n₂y′ + n₃z′ = D
 - Find: projected point P′(x′, y′, z′)
 ![](public/images/perspective_trasforamation_cop_origin.png)
 
+
 **Step 1 — Ray from COP through P:**
 
 Since the COP is the origin and the ray passes through P, any point on this ray is a scalar multiple of P:
@@ -1147,10 +1148,14 @@ Divide each of the first three results by the last (perspective divide) to recov
 
 ### 4.3 Standard Perspective — COP at Origin, View Plane z = d
 
+![](public/images/perspective_trasforamation_cop_origin_view_x_d.png)
+
 This is a **special case** of Section 4.2 where the plane is z = d.
 
 - Normal: N = (0, 0, 1)
 - Reference point: R₀ = (0, 0, d)
+
+![](public/images/z_d_plane.jpeg)
 
 **Compute D:**
 
