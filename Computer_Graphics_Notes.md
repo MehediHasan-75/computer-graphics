@@ -1102,6 +1102,7 @@ n₁x′ + n₂y′ + n₃z′ = D
 - Object point: P(x, y, z)
 - Find: projected point P′(x′, y′, z′)
 ![](public/images/perspective_trasforamation_cop_origin.png)
+
 **Step 1 — Ray from COP through P:**
 
 Since the COP is the origin and the ray passes through P, any point on this ray is a scalar multiple of P:
@@ -1113,21 +1114,15 @@ P′ = α · P   →   x′ = αx,   y′ = αy,   z′ = αz
 (α is an unknown scalar to be determined.)
 
 **Step 2 — P′ must lie on the plane:**
-
-Substitute x′ = αx, y′ = αy, z′ = αz into the plane equation:
+So, it it shoudl satisfy the plane equation n₁x′ + n₂y′ + n₃z′ = D
 
 ```
 n₁(αx) + n₂(αy) + n₃(αz) = D
 α(n₁x + n₂y + n₃z) = D
-```
-
-**Step 3 — Solve for α:**
-
-```
 α = D / (n₁x + n₂y + n₃z)
 ```
 
-**Step 4 — Substitute α back to get projection formulas:**
+**Step 3 — Substitute α back to get projection formulas:**
 
 ```
 x′ = Dx / (n₁x + n₂y + n₃z)
@@ -1137,7 +1132,7 @@ z′ = Dz / (n₁x + n₂y + n₃z)
 
 where `D = n₁x₀ + n₂y₀ + n₃z₀`.
 
-**Step 5 — Matrix form using homogeneous coordinates:**
+**Step 4 — Matrix form using homogeneous coordinates:**
 
 ```
 | D   0   0   0 |   | x |   | Dx                    |
