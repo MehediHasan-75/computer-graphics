@@ -1278,19 +1278,37 @@ After multiplying by (x, y, z, 1), the result is (Dx, Dy, Dz, n₁x+n₂y+n₃z)
 The perspective process introduces **four distinct visual anomalies**:
 
 **1. Perspective Foreshortening**
-Objects appear progressively smaller as their distance from the COP increases. Enhances depth cues but distorts actual sizes.
+The farther an object is from the center of projection, the smaller it
+appears (i.e. its projected size becomes smaller)
+
+![](public/images/perspective_forecasting.png)
+
 
 **2. Vanishing Points**
 Sets of parallel 3D lines that are **not parallel to the view plane** appear to converge at a single point on the view plane called a vanishing point.
-- Example: parallel railway tracks appear to meet at the horizon.
+
+* Imagine a flat window (the **view plane**) in front of you.
+* **Lines that are parallel to the window** (the view plane) stay parallel when you look at them—they **don’t converge**.
+* **Lines that are slanted away from the window** (not parallel to it) **appear to come together** at some point in the distance—that point is the **vanishing point**.
+
+Example: Railway tracks appear to meet at the horizon because they are not parallel to your eyes’ view plane—they go away from you into depth.?
+
 - **Principal vanishing points** are formed by lines parallel to the x, y, or z axes.
 - The number of principal vanishing points equals the number of principal axes the view plane intersects (gives 1-point, 2-point, or 3-point perspective).
 
 **3. View Confusion**
-Points **behind the COP** get projected upside-down and backward onto the view plane. This is why 3D clipping must happen *before* applying the perspective transformation.
+Points **behind the COP** get projected upside-down and backward onto the view plane.(like mirror) This is why 3D clipping must happen *before* applying the perspective transformation.
+
+![](public/images/vanising_point_view_confusion.png)
 
 **4. Topological Distortion**
 The plane passing through the COP and parallel to the view plane is a singularity. Any point on it projects to infinity. A finite line segment crossing this plane is torn into two disconnected, infinitely long halves.
+
+* Think of this like trying to take a photo of something right at the lens—it’s too close to the eye, so it “blows up” in the image.
+
+![](public/images/tropological_distortion.png)
+
+
 
 ---
 
