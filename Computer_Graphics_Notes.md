@@ -1317,7 +1317,7 @@ The plane passing through the COP and parallel to the view plane is a singularit
 In parallel projection, all projectors are **parallel to each other** — the COP is conceptually at infinity. A fixed **direction of projection vector V = (a, b, c)** governs all projectors.
 
 Preserves true dimensions, shapes, and parallel relationships — hence the standard in engineering drafting.
-
+![](public/images/parallel_projection.png)
 ---
 
 ### 5.1 General Parallel Projection onto the xy-Plane
