@@ -970,8 +970,55 @@ This perspective assumes the object remains perfectly stationary while the obser
 * Because 3D transformations use $4 \times 4$ matrices, they can all be seamlessly multiplied together to form a single Composite Transformation Matrix (CTM), allowing complex multi-step manipulations to be calculated in a single mathematical step.
 
 **6.4 Instance Transformations**
-* In complex 3D scenes, an object (like a chair) is typically modeled only once in its own local "object coordinate space."
-* To place multiple copies (instances) of this chair into a master "scene coordinate space," an **instance transformation** is applied. This is a specific composite transformation matrix that scales, rotates, and translates the generic chair into its specific final position, size, and orientation within the room.
+* In complex 3D scenes, an object is typically modeled once in local "object coordinate space." To place multiple copies into a master "scene coordinate space," an **instance transformation** is applied.
+
+---
+
+### **Canonical 3D Rotations**
+
+From Chapter 4, we know that rotation about each coordinate axis follows the right-hand rule:
+
+**Rotation about the z-axis:** $x' = x\cos\theta - y\sin\theta$, $y' = x\sin\theta + y\cos\theta$, $z' = z$
+
+**Rotation about the y-axis:** $x' = x\cos\theta + z\sin\theta$, $y' = y$, $z' = -x\sin\theta + z\cos\theta$
+
+**Rotation about the x-axis:** $x' = x$, $y' = y\cos\theta - z\sin\theta$, $z' = y\sin\theta + z\cos\theta$
+
+![3D Rotation matrices](public/images/3d_rotation.png)
+
+---
+
+### **Arbitrary Axis Rotation**
+
+For rotation about a non-standard axis passing through point $P$ with direction $V$:
+
+$$R_{a,L} = T_{-P} \cdot A_V^{-1} \cdot R_{\theta,z} \cdot A_V \cdot T_P$$
+
+**Alignment matrices** with $|V| = \sqrt{a^2 + b^2 + c^2}$ and $\lambda = \sqrt{b^2 + c^2}$:
+
+![Alignment transformation matrices](public/images/Av_and_inverse_Av.png)
+
+---
+
+### **Problem 6.4: Pyramid Rotation About Arbitrary Line**
+
+Pyramid with vertices $A(0,0,0)$, $B(1,0,0)$, $C(0,1,0)$, $D(0,0,1)$ rotated 45° about line $L$ (direction $V = J + K$, passing through $C$):
+
+![Pyramid rotation and transformation matrix](public/images/pyramid.png)
+
+---
+
+### **3D Mirror Reflection**
+
+Mirror reflection about a plane with normal vector **N** and reference point $P_0$:
+
+$$M_{N,P_0} = T_V^{-1} \cdot A_N^{-1} \cdot M \cdot A_N \cdot T_V$$
+
+![Mirror reflection transformation](public/images/mirror_transformation.png)
+
+![Translation and scaling in 3D](public/images/translation_and_scaling.png)
+
+---
 
 Here is an exam-oriented summary of Chapter 7, which introduces the mathematics and fundamental concepts of projecting 3D objects onto a 2D display surface.
 # Chapter 7: Mathematics of Projection
