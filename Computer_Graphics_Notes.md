@@ -952,7 +952,7 @@ $$M_L = T_v \cdot R_{\theta'} \cdot M_x \cdot R_{-\theta'} \cdot T_{-v}$$
 
 where $v = bJ$
 
-![Problem 4.9 - Reflection about a line L](public/images/problem_4_9_reflection_line.jpg)
+![Problem 4.9 - Reflection about a line L](public/images/miroring_line_2d_example.jpg)
 
 ---
 
@@ -963,36 +963,8 @@ where $v = bJ$
 - (b) The vertical line $x = 2$  
 - (c) The line $y = x + 2$
 
-**Solution:**
-
-We represent the vertices as a homogeneous coordinate matrix:
-$$V = \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
-
-From Problem 4.9, the reflection matrix is: $M_L = T_v \cdot R_{\theta'} \cdot M_x \cdot R_{-\theta'} \cdot T_{-v}$
-
-**(a) The line $y = 2$:** has y-intercept $(0, 2)$ and makes an angle of $0°$ with the x-axis. So $\theta = 0$ and $v = 2J$.
-
-$$M_L = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 2 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & -2 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 4 \\ 0 & 0 & 1 \end{pmatrix}$$
-
-$$M_L \cdot V = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 4 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 1 & 0 \\ 4 & 6 & 4 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
-
 Converting: $A' = (-1, 4)$, $B' = (0, 6)$, $C' = (1, 4)$, $D' = (0, 2)$
 
-**(b) The vertical line $x = 2$:** has no y-intercept and an infinite slope. We use $M_x$ (reflection about y-axis) combined with translation: translating 2 units, reflecting, then translating back. With $v = 2I$:
-
-$$M_L = T_v \cdot M_y \cdot T_{-v} = \begin{pmatrix} 1 & 0 & 2 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & -2 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 4 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
-
-$$M_L \cdot V = \begin{pmatrix} -1 & 0 & 4 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} 5 & -4 & 3 & 4 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
-
-So $A' = (5, 0)$, $B' = (-4, -2)$, $C' = (3, 0)$, $D' = (4, 2)$
-
-**(c) The line $y = x + 2$:** has slope $m = 1$ and y-intercept $b = 2$. From Problem 4.10, with $m = 1$ and $b = 2$:
-
-$$M_L = \begin{pmatrix} 0 & 1 & -2 \\ 1 & 0 & 2 \\ 0 & 0 & 1 \end{pmatrix}$$
-
-$$M_L \cdot V = \begin{pmatrix} 0 & 1 & -2 \\ 1 & 0 & 2 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} -2 & -4 & -2 & 0 \\ 1 & 2 & 3 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
-
-So $A' = (-2, 1)$, $B' = (-4, 2)$, $C' = (-2, 3)$, $D' = (0, 2)$
 
 ![Problem 4.11 - Diamond reflection about three lines](public/images/problem_4_11_diamond_reflections.jpg)
 
