@@ -798,6 +798,10 @@ Transformation is the mathematical process of simulating the spatial manipulatio
 1.  **Geometric Transformation:** The coordinate system remains stationary, and the object itself is moved or altered.
 2.  **Coordinate Transformation:** The object remains stationary, and the coordinate system is moved or altered around it.
 
+**Matrix Description of Basic Transformations**
+
+![Matrix Description of Basic Transformations](public/images/matrix_description_transformations.png)
+
 ---
 
 **4.1 Geometric Transformations**
