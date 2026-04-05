@@ -891,6 +891,10 @@ Given triangle vertices $A(3,4)$, $B(2,2)$, $C(4,2)$:
 
 **Fig. :** Matrix forms of scaling and mirroring transformations, including matrix multiplication and geometric effects.
 
+![Handwritten notes on composite transformations](public/images/composite_transformations_2d.jpeg)
+
+**Fig. :** Detailed notes on fixed-point rotations, scaling, composite transformations, and shearing with complete matrix representations.
+
 ---
 
 **4.2 Coordinate Transformations**
