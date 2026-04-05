@@ -798,6 +798,8 @@ Transformation is the mathematical process of simulating the spatial manipulatio
 1.  **Geometric Transformation:** The coordinate system remains stationary, and the object itself is moved or altered.
 2.  **Coordinate Transformation:** The object remains stationary, and the coordinate system is moved or altered around it.
 
+---
+
 **4.1 Geometric Transformations**
 This section defines the fundamental operations for manipulating a point $P(x,y)$ to a new position $P'(x',y')$:
 * **Translation ($T_v$):** Displacing an object by a specific distance and direction using a vector. 
@@ -872,6 +874,18 @@ Given triangle vertices $A(3,4)$, $B(2,2)$, $C(4,2)$:
   - $C':\ y' = 2 + (1 \times 4) = 6 \rightarrow (4, 6)$
 
 > The core takeaway: Identify which axis is fixed and apply the corresponding formula.
+
+---
+
+#### Transformations in matrix form
+
+![Handwritten notes on translation and rotation](public/images/2d_translation_and_rotation.jpeg)
+
+**Fig. :** translation and rotation transformations, including matrix forms and geometric interpretation.
+
+![Handwritten notes on scaling and mirroring](public/images/2dscaling_and_mirroring.jpeg)
+
+**Fig. :** Matrix forms of scaling and mirroring transformations, including matrix multiplication and geometric effects.
 
 ---
 
