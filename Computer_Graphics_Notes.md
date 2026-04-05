@@ -986,6 +986,8 @@ Here is an exam-oriented summary of Chapter 5, which focuses on selecting and ma
 * It operates on the principle of maintaining relative placement (e.g., if a point is dead center in the window, it must be dead center in the viewport).
 * **Geometric Distortion:** Occurs if the aspect ratio (width-to-height ratio) of the window does not match the aspect ratio of the viewport, causing objects to stretch or compress.
 
+![Window-to-Viewport mapping transformation](public/images/window_to_viewport_mapping.png)
+
 **5.2 & 5.3 Point and Line Clipping**
 Clipping is the computational process of removing the parts of an object that lie outside a specified boundary, known as the clipping window. Only the visible parts inside the window are kept and rendered.
 * **Point Clipping:** Simply evaluates if a point's coordinates satisfy $x_{min} \le x \le x_{max}$ and $y_{min} \le y \le y_{max}$.
