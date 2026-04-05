@@ -905,11 +905,98 @@ Instead of modifying the object's points, a new coordinate system ($x'y'$) is de
 * **Composition:** Complex transformations are built by stringing together basic transformations. For example, to magnify an object while keeping its center $C(h,k)$ fixed, you must: (1) Translate the object so $C$ is at the origin, (2) Scale it, and (3) Translate it back to its original position.
 * **Matrix Representation:** Rotation, scaling, and reflection can be represented as $2 \times 2$ matrices, but translation cannot. 
 * **Homogeneous Coordinates:** To allow all transformations (including translation) to be treated as matrix multiplications, points are represented as 3D vectors $[x, y, 1]^T$, and transformations are upgraded to **$3 \times 3$ matrices**.
-* **Composite Transformation Matrix (CTM):** Because all basic transformations are now $3 \times 3$ matrices, they can be multiplied (concatenated) together into a single CTM, which is highly computationally efficient. 
+* **Composite Transformation Matrix (CTM):** Because all basic transformations are now $3 \times 3$ matrices, they can be multiplied (concatenated) together into a single CTM, which is highly computationally efficient.
+
+**Composite Transformations About an Arbitrary Point**
+
+To perform rotation, scaling, or reflection about an arbitrary point $(h, k)$ instead of the origin:
+
+1. **Translate** so the point $(h, k)$ moves to the origin: $T_{-h,-k}$
+2. **Apply** the desired transformation (rotation, scaling, reflection)
+3. **Translate back**: $T_{h,k}$
+
+**General form:** $M = T_{h,k} \cdot M_{transformation} \cdot T_{-h,-k}$
+
+For **rotation about point $(h, k)$:**
+$$R_p = T_{h,k} \cdot R_{\theta} \cdot T_{-h,-k} = \begin{pmatrix} \cos\theta & -\sin\theta & h(1-\cos\theta) + k\sin\theta \\ \sin\theta & \cos\theta & k(1-\cos\theta) - h\sin\theta \\ 0 & 0 & 1 \end{pmatrix}$$
+
+For **scaling about point $(h, k)$:**
+$$S_p = T_{h,k} \cdot S_{s_x, s_y} \cdot T_{-h,-k} = \begin{pmatrix} s_x & 0 & h(1-s_x) \\ 0 & s_y & k(1-s_y) \\ 0 & 0 & 1 \end{pmatrix}$$
+
+![2D composite transformations matrices](public/images/2d_transformations_matrices.jpg)
+
+---
 
 **4.4 Instance Transformations**
 * **Instances:** A complex picture often uses the same object multiple times (e.g., a wheel on a car). An object is defined once in its own local coordinate system, and an **instance transformation** converts those local coordinates into the master "picture" coordinates. This typically involves scaling, rotating, and translating the object into its proper place.
 * **Multilevel/Nested Structures:** Objects can be made of sub-objects (e.g., apples on a branch, branch on a tree). To render these efficiently, instance transformations are concatenated across levels so that the lowest-level object is transformed directly into the final picture coordinates in one step.
+
+---
+
+### **Problem 4.9: Reflection About a Line L**
+
+**Problem:** Describe the transformation $M_L$ which reflects an object about a line $L$.
+
+**Solution:**
+
+Let line $L$ in Fig. 4-15 have a y-intercept $(0, b)$ and an angle of inclination $\theta'$ (with respect to the x-axis). We reduce the description to known transformations:
+
+1. Translate the intersection point $B$ to the origin
+2. Rotate by $-\theta'$ so that line $L$ aligns with the x-axis
+3. Mirror-reflect about the x-axis
+4. Rotate back by $\theta'$
+5. Translate $B$ back to $(0, b)$
+
+In transformation notation:
+$$M_L = T_v \cdot R_{\theta'} \cdot M_x \cdot R_{-\theta'} \cdot T_{-v}$$
+
+where $v = bJ$
+
+![Problem 4.9 - Reflection about a line L](public/images/problem_4_9_reflection_line.jpg)
+
+---
+
+### **Problem 4.11: Reflect Diamond About Three Different Lines**
+
+**Problem:** Reflect the diamond-shaped polygon with vertices $A(-1, 0)$, $B(0, -2)$, $C(1, 0)$, and $D(0, 2)$ about:
+- (a) The horizontal line $y = 2$
+- (b) The vertical line $x = 2$  
+- (c) The line $y = x + 2$
+
+**Solution:**
+
+We represent the vertices as a homogeneous coordinate matrix:
+$$V = \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
+
+From Problem 4.9, the reflection matrix is: $M_L = T_v \cdot R_{\theta'} \cdot M_x \cdot R_{-\theta'} \cdot T_{-v}$
+
+**(a) The line $y = 2$:** has y-intercept $(0, 2)$ and makes an angle of $0°$ with the x-axis. So $\theta = 0$ and $v = 2J$.
+
+$$M_L = \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & 2 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & 0 \\ 0 & 1 & -2 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 4 \\ 0 & 0 & 1 \end{pmatrix}$$
+
+$$M_L \cdot V = \begin{pmatrix} 1 & 0 & 0 \\ 0 & -1 & 4 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 1 & 0 \\ 4 & 6 & 4 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
+
+Converting: $A' = (-1, 4)$, $B' = (0, 6)$, $C' = (1, 4)$, $D' = (0, 2)$
+
+**(b) The vertical line $x = 2$:** has no y-intercept and an infinite slope. We use $M_x$ (reflection about y-axis) combined with translation: translating 2 units, reflecting, then translating back. With $v = 2I$:
+
+$$M_L = T_v \cdot M_y \cdot T_{-v} = \begin{pmatrix} 1 & 0 & 2 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 0 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} 1 & 0 & -2 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} = \begin{pmatrix} -1 & 0 & 4 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix}$$
+
+$$M_L \cdot V = \begin{pmatrix} -1 & 0 & 4 \\ 0 & 1 & 0 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} 5 & -4 & 3 & 4 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
+
+So $A' = (5, 0)$, $B' = (-4, -2)$, $C' = (3, 0)$, $D' = (4, 2)$
+
+**(c) The line $y = x + 2$:** has slope $m = 1$ and y-intercept $b = 2$. From Problem 4.10, with $m = 1$ and $b = 2$:
+
+$$M_L = \begin{pmatrix} 0 & 1 & -2 \\ 1 & 0 & 2 \\ 0 & 0 & 1 \end{pmatrix}$$
+
+$$M_L \cdot V = \begin{pmatrix} 0 & 1 & -2 \\ 1 & 0 & 2 \\ 0 & 0 & 1 \end{pmatrix} \begin{pmatrix} -1 & 0 & 1 & 0 \\ 0 & -2 & 0 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix} = \begin{pmatrix} -2 & -4 & -2 & 0 \\ 1 & 2 & 3 & 2 \\ 1 & 1 & 1 & 1 \end{pmatrix}$$
+
+So $A' = (-2, 1)$, $B' = (-4, 2)$, $C' = (-2, 3)$, $D' = (0, 2)$
+
+![Problem 4.11 - Diamond reflection about three lines](public/images/problem_4_11_diamond_reflections.jpg)
+
+---
 
 Here is an exam-oriented summary of Chapter 5, which focuses on selecting and mapping a portion of a 2D scene onto a display device, along with the algorithms required to trim objects that fall outside the viewing area.
 
