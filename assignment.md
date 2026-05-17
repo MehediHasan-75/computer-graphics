@@ -1,9 +1,4 @@
-# CSE Assignment
-
-**Name:** Mehedi Hasan
-**Roll No:** 75
-**Course:** Computer Graphics
-
+**2020331075**
 ---
 
 ## Part 1 — Topic 3: Region Filling
